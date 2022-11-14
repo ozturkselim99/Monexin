@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.selimozturk.monexin.ui.fragments.home.view.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_transactionFragment"
+            app:destination="@id/transactionFragment"
+            app:enterAnim="@anim/from_left"
+            app:exitAnim="@anim/to_right"
+            app:popEnterAnim="@anim/from_right"
+            app:popExitAnim="@anim/to_left"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_homeFragment_to_transactionDetail"
+            app:destination="@id/transactionDetail"
+            app:enterAnim="@anim/from_left"
+            app:exitAnim="@anim/to_right"
+            app:popEnterAnim="@anim/from_right"
+            app:popExitAnim="@anim/to_left" />
+    </fragment>
+    <fragment
+        android:id="@+id/expensesFragment"
+        android:name="com.selimozturk.monexin.ui.fragments.expenses.view.ExpensesFragment"
+        android:label="fragment_expenses"
+        tools:layout="@layout/fragment_expenses" >
+        <action
+            android:id="@+id/action_expensesFragment_to_filterBottomSheetFragment"
+            app:destination="@id/filterBottomSheetFragment" />
+        <action
+            android:id="@+id/action_expensesFragment_to_transactionDetail"
+            app:destination="@id/transactionDetail"
+            app:enterAnim="@anim/from_left"
+            app:exitAnim="@anim/to_right"
+            app:popEnterAnim="@anim/from_right"
+            app:popExitAnim="@anim/to_left" />
+    </fragment>
+    <fragment
+        android:id="@+id/incomesFragment"
+        android:name="com.selimozturk.monexin.ui.fragments.incomes.view.IncomesFragment"
+        android:label="fragment_incomes"
+        tools:layout="@layout/fragment_incomes" >
+        <action
+            android:id="@+id/action_incomesFragment_to_filterBottomSheetFragment2"
+            app:destination="@id/filterBottomSheetFragment" />
+        <action
+            android:id="@+id/action_incomesFragment_to_transactionDetail"
+            app:destination="@id/transactionDetail"
+            app:enterAnim="@anim/from_left"
+            app:exitAnim="@anim/to_right"
+            app:popEnterAnim="@anim/from_right"
+            app:popExitAnim="@anim/to_left" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.selimozturk.monexin.ui.fragments.profile.view.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/transactionFragment"
+        android:name="com.selimozturk.monexin.ui.fragments.transaction.view.TransactionFragment"
+        android:label="TransactionFragment" >
+        <action
+            android:id="@+id/action_transactionFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true" />
+        <argument
+            android:name="transactionUpdate"
+            app:argType="com.selimozturk.monexin.model.Transactions"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_transactionFragment_to_transactionDetail"
+            app:destination="@id/transactionDetail"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left" />
+        <action
+            android:id="@+id/action_transactionFragment_to_cameraFragment"
+            app:destination="@id/cameraFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left" />
+    </fragment>
+    <dialog
+        android:id="@+id/filterBottomSheetFragment"
+        android:name="com.selimozturk.monexin.ui.fragments.filter_bottom_sheet.FilterBottomSheetFragment"
+        android:label="FilterBottomSheetFragment" >
+        <action
+            android:id="@+id/action_filterBottomSheetFragment_to_expensesFragment"
+            app:destination="@id/expensesFragment" />
+        <action
+            android:id="@+id/action_filterBottomSheetFragment_to_incomesFragment2"
+            app:destination="@id/incomesFragment" />
+        <action
+            android:id="@+id/action_filterBottomSheetFragment_to_dateRangePickerFragment"
+            app:destination="@id/dateRangePickerFragment" />
+    </dialog>
+    <dialog
+        android:id="@+id/dateRangePickerFragment"
+        android:name="com.selimozturk.monexin.ui.fragments.date_picker.DatePickerFragment"
+        android:label="fragment_date_range_picker"
+        tools:layout="@layout/fragment_date_range_picker" >
+        <action
+            android:id="@+id/action_dateRangePickerFragment_to_filterBottomSheetFragment"
+            app:destination="@id/filterBottomSheetFragment" />
+    </dialog>
+    <fragment
+        android:id="@+id/transactionDetail"
+        android:name="com.selimozturk.monexin.ui.fragments.transaction_detail.view.TransactionDetailFragment"
+        android:label="fragment_transaction_detail"
+        tools:layout="@layout/fragment_transaction_detail" >
+        <action
+            android:id="@+id/action_transactionDetail_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left" />
+        <action
+            android:id="@+id/action_transactionDetail_to_expensesFragment"
+            app:destination="@id/expensesFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left" />
+        <action
+            android:id="@+id/action_transactionDetail_to_incomesFragment"
+            app:destination="@id/incomesFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left" />
+        <argument
+            android:name="transaction"
+            app:argType="com.selimozturk.monexin.model.Transactions" />
+        <action
+            android:id="@+id/action_transactionDetail_to_transactionFragment"
+            app:destination="@id/transactionFragment"
+            app:enterAnim="@anim/from_left"
+            app:exitAnim="@anim/to_right"
+            app:popEnterAnim="@anim/from_right"
+            app:popExitAnim="@anim/to_left" />
+    </fragment>
+    <fragment
+        android:id="@+id/denemeFragment"
+        android:name="com.selimozturk.monexin.ui.fragments.DenemeFragment"
+        android:label="fragment_deneme"
+        tools:layout="@layout/fragment_deneme" />
+    <fragment
+        android:id="@+id/cameraFragment"
+        android:name="com.selimozturk.monexin.ui.fragments.camera.CameraFragment"
+        android:label="CameraFragment" >
+        <action
+            android:id="@+id/action_cameraFragment_to_takenPhotoFragment"
+            app:destination="@id/takenPhotoFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_cameraFragment_to_transactionFragment"
+            app:destination="@id/transactionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/takenPhotoFragment"
+        android:name="com.selimozturk.monexin.TakenPhotoFragment"
+        android:label="fragment_taken_photo"
+        tools:layout="@layout/fragment_taken_photo" >
+        <action
+            android:id="@+id/action_takenPhotoFragment_to_transactionFragment"
+            app:destination="@id/transactionFragment"
+            app:popUpTo="@id/transactionFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+</navigation>

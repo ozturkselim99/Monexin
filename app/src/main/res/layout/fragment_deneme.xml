@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="16dp"
+    tools:context=".ui.fragments.DenemeFragment">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/menu"
+        app:layout_constraintTop_toTopOf="parent"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/cera_pro_medium"
+        app:boxStrokeColor="@color/grey_600"
+        app:hintTextColor="@color/grey_600"
+        android:hint="@string/best_match"
+        >
+
+        <AutoCompleteTextView
+            android:id="@+id/example"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:editable="false"
+            android:fontFamily="@font/cera_pro_medium"
+            android:inputType="none" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

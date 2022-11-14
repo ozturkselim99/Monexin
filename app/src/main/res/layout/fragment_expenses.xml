@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey_200"
+    android:padding="20dp"
+    tools:context=".ui.fragments.expenses.view.ExpensesFragment">
+
+    <LinearLayout
+        android:id="@+id/expensesTextAndFilterButtonLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/activeExpensesText"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/cera_pro_medium"
+                android:text="@string/active_expenses"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/expensesAmountText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="4dp"
+                android:fontFamily="@font/cera_pro_medium"
+                tools:text="@string/sample_expense_number"
+                android:textColor="@color/accent_4" />
+
+        </LinearLayout>
+
+
+        <ImageView
+            android:id="@+id/expensesFilterButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:contentDescription="@string/filter_expenses_button"
+            android:focusable="true"
+            android:src="@drawable/ic_filter" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/expensesTimeText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/cera_pro_medium"
+        android:text="@string/all_time"
+        android:textColor="@color/grey_600"
+        app:layout_constraintTop_toBottomOf="@id/expensesTextAndFilterButtonLayout">
+
+    </TextView>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/expensesSearchTextContainer"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:hint="@string/search"
+        app:boxStrokeColor="@color/grey_600"
+        app:endIconMode="clear_text"
+        app:hintTextColor="@color/grey_600"
+        app:layout_constraintTop_toBottomOf="@id/expensesTimeText">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/expensesSearchInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_search"
+            android:fontFamily="@font/cera_pro_medium"
+            android:inputType="text"
+            android:lines="1" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <LinearLayout
+        android:id="@+id/transactionNotFoundLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/expenseTransactionsRW"
+        app:layout_constraintEnd_toEndOf="@+id/expenseTransactionsRW"
+        app:layout_constraintStart_toStartOf="@+id/expenseTransactionsRW"
+        app:layout_constraintTop_toTopOf="@+id/expenseTransactionsRW">
+
+        <ImageView
+            android:id="@+id/noDataImage"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_not_found" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/cera_pro_medium"
+            android:text="Transaction Not Found"
+            android:textColor="@color/grey_600" />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/expenseTransactionsRW"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/expensesSearchTextContainer" />
+
+    <ProgressBar
+        android:id="@+id/expensesProgressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
