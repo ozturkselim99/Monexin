@@ -33,7 +33,7 @@ class ProfileFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentProfileBinding.inflate(inflater, container, false)
         initViews()
         return binding.root
@@ -74,7 +74,7 @@ class ProfileFragment : Fragment() {
                 SignOutDialogBinding.inflate(layoutInflater)
             val builder = AlertDialog.Builder(requireContext()).setView(dialogBinding.root).show()
             dialogBinding.signOutButton.setOnClickListener {
-                authViewModel.signout()
+                authViewModel.signOut()
                 sessionManager.setLogin(false)
                 builder.dismiss()
                 val intent = Intent(requireContext(), IntroActivity::class.java)

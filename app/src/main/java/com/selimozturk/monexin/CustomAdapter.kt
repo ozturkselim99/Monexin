@@ -1,3 +1,0 @@
-package com.selimozturk.monexin
-
-

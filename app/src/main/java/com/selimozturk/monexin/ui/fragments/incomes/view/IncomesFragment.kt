@@ -4,17 +4,24 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.transition.AutoTransition
+import androidx.transition.TransitionManager
 import com.selimozturk.monexin.R
 import com.selimozturk.monexin.adapter.TransactionAdapter
 import com.selimozturk.monexin.databinding.FragmentIncomesBinding
+import com.selimozturk.monexin.model.FilterModel
 import com.selimozturk.monexin.model.Transactions
+import com.selimozturk.monexin.ui.fragments.date_picker.DatePickerFragment
 import com.selimozturk.monexin.ui.fragments.incomes.viewmodel.IncomesViewModel
 import com.selimozturk.monexin.utils.Resource
+import com.selimozturk.monexin.utils.convertToTimestamp
 import com.selimozturk.monexin.utils.setVisible
 import com.selimozturk.monexin.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,16 +33,21 @@ class IncomesFragment : Fragment() {
     private val adapter = TransactionAdapter()
     private val incomesViewModel by viewModels<IncomesViewModel>()
     private var incomesList: List<Transactions> = listOf()
-
+    private var minDate: String = "0"
+    private var maxDate: String = System.currentTimeMillis().toString()
+    private var bestMatchResult: String = "0"
+    private var minAmount: String = Double.MIN_VALUE.toString()
+    private var maxAmount: String = Double.MAX_VALUE.toString()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentIncomesBinding.inflate(inflater, container, false)
         setupRecyclerview()
         initViews()
-        getIncomes()
+        getIncomes(null)
+        getIncomesByFilters()
         return binding.root
     }
 
@@ -45,7 +57,7 @@ class IncomesFragment : Fragment() {
     }
 
     private fun loadTransactions(transactions: List<Transactions>) {
-        adapter.items=transactions
+        adapter.items = transactions
         binding.incomeTransactionsRW.adapter = adapter
         adapter.onItemClicked = { transaction ->
             val direction =
@@ -54,22 +66,90 @@ class IncomesFragment : Fragment() {
         }
     }
 
-    private fun initViews(){
-        binding.incomesFilterButton.setOnClickListener {
-            findNavController().navigate(R.id.action_incomesFragment_to_filterBottomSheetFragment2)
+    private fun expandableFilterLayout() {
+        binding.filtersTextLayout.setOnClickListener {
+            if (binding.filterLayout.visibility == View.GONE) {
+                TransitionManager.beginDelayedTransition(
+                    binding.filterLayout,
+                    AutoTransition()
+                )
+                binding.arrowDirectionImage.setImageResource(R.drawable.ic_arrow_up)
+                binding.filterLayout.visibility = View.VISIBLE
+            } else {
+                TransitionManager.beginDelayedTransition(binding.filterLayout, AutoTransition())
+                binding.arrowDirectionImage.setImageResource(R.drawable.ic_arrow_down)
+                binding.filterLayout.visibility = View.GONE
+            }
+        }
+    }
+
+    private fun getIncomesByFilters() {
+        binding.filterButton.setOnClickListener {
+            minAmount = binding.minTransactionInput.text.toString().ifEmpty {
+                Double.MIN_VALUE.toString()
+            }
+            maxAmount = binding.maxTransactionInput.text.toString().ifEmpty {
+                Double.MAX_VALUE.toString()
+            }
+            getIncomes(FilterModel(bestMatchResult, minAmount, maxAmount, minDate, maxDate))
+        }
+    }
+
+    private fun initViews() {
+        initBestMatchFilterList()
+        dateFilterControl()
+        expandableFilterLayout()
+        binding.transactionMinDateLayout.setOnClickListener {
+            datePicker(0)
+        }
+        binding.transactionMaxDateLayout.setOnClickListener {
+            datePicker(1)
         }
         binding.incomesSearchInput.addTextChangedListener { editable ->
             searchFilter(editable.toString())
         }
     }
 
-    private fun getIncomes(){
-        incomesViewModel.getIncomes()
-        incomesViewModel.incomesState.observe(viewLifecycleOwner){
+    private fun initBestMatchFilterList() {
+        val bestMatchFilterList = resources.getStringArray(R.array.bestMatchFilterList)
+        val arrayAdapter =
+            ArrayAdapter(requireContext(), R.layout.dropdown_item, bestMatchFilterList)
+        binding.bestMatchFilterList.setAdapter(arrayAdapter)
+        binding.bestMatchFilterList.onItemClickListener =
+            AdapterView.OnItemClickListener { parent, view, position, id ->
+                bestMatchResult = position.toString()
+            }
+    }
+
+    private fun dateFilterControl() {
+        binding.selectedMinDateText.addTextChangedListener {
+            if (it.toString() != "Min Date") {
+                minDate = (it.toString().convertToTimestamp()).toString()
+                if (maxDate.isNotEmpty() && (minDate.toLong() >= maxDate.toLong())) {
+                    context?.showToast("Minimum date must be less than the maximum date")
+                    binding.selectedMinDateText.text = "Min Date"
+                }
+            }
+        }
+        binding.selectedMaxDateText.addTextChangedListener {
+            if (it.toString() != "Max Date") {
+                //86400000(1 gün) seçilen max date kapsaması için topluyorum
+                maxDate = (it.toString().convertToTimestamp() + 86400000).toString()
+                if (minDate.isNotEmpty() && (maxDate.toLong() <= minDate.toLong())) {
+                    context?.showToast("Maximum date must be greater than the minimum date")
+                    binding.selectedMaxDateText.text = "Max Date"
+                }
+            }
+        }
+    }
+
+    private fun getIncomes(filterModel: FilterModel?) {
+        incomesViewModel.getIncomes(filterModel)
+        incomesViewModel.incomesState.observe(viewLifecycleOwner) {
             when (it) {
                 is Resource.Success -> {
                     binding.incomesProgressBar.setVisible(false)
-                    binding.incomesAmountText.text=it.result.activeIncome
+                    binding.incomesAmountText.text = it.result.activeIncome
                     incomesList = it.result.incomes
                     binding.transactionNotFoundLayout.setVisible(it.result.incomes.isEmpty())
                     loadTransactions(it.result.incomes)
@@ -86,7 +166,7 @@ class IncomesFragment : Fragment() {
     }
 
     private fun searchFilter(text: String) {
-        var filteredList: ArrayList<Transactions> = arrayListOf()
+        val filteredList: ArrayList<Transactions> = arrayListOf()
         for (item in incomesList) {
             if (item.title.lowercase().contains(text.lowercase())) {
                 filteredList.add(item)
@@ -98,6 +178,23 @@ class IncomesFragment : Fragment() {
         }
     }
 
-
+    private fun datePicker(dateType: Int) {
+        val datePickerFragment = DatePickerFragment()
+        val supportFragmentManager = requireActivity().supportFragmentManager
+        supportFragmentManager.setFragmentResultListener(
+            "REQUEST_KEY",
+            viewLifecycleOwner
+        ) { resultKey, bundle ->
+            if (resultKey == "REQUEST_KEY") {
+                val date = bundle.getString("SELECTED_DATE")
+                if (dateType == 0) {
+                    binding.selectedMinDateText.text = date
+                } else {
+                    binding.selectedMaxDateText.text = date
+                }
+            }
+        }
+        datePickerFragment.show(supportFragmentManager, "DatePickerFragment")
+    }
 
 }

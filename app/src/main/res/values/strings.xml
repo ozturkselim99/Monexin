@@ -108,10 +108,19 @@
     <string name="delete">Delete</string>
     <string name="transaction_failed">Transaction failed</string>
     <string name="transaction_has_been_succesfully">Transaction has been succesfully</string>
-    <string-array name="example">
+    <string name="taken_photo">Taken photo</string>
+    <string name="accept_taken_photo">Accept taken photo</string>
+    <string name="cancel_taken_photo">Cancel taken photo</string>
+    <string name="close_and_open_filter_layout_button">Close and open filter layout button</string>
+    <string name="no_data_image">No data image</string>
+    <string name="transaction_not_found">Transaction Not Found</string>
+    <string name="transaction_add_button">Transaction add button</string>
+    <string name="taken_photo_delete_button">Taken photo delete button</string>
+    <string name="transaction_image_not_found">Transaction Image Not Found</string>
+    <string-array name="bestMatchFilterList">
+        <item>Descending by date</item>
+        <item>Ascending by date</item>
         <item>Decreasing by amount</item>
         <item>Increasing by amount</item>
-        <item>Ascending by date</item>
-        <item>Descending by date</item>
     </string-array>
 </resources>

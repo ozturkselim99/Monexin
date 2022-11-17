@@ -32,9 +32,6 @@
         android:label="fragment_expenses"
         tools:layout="@layout/fragment_expenses" >
         <action
-            android:id="@+id/action_expensesFragment_to_filterBottomSheetFragment"
-            app:destination="@id/filterBottomSheetFragment" />
-        <action
             android:id="@+id/action_expensesFragment_to_transactionDetail"
             app:destination="@id/transactionDetail"
             app:enterAnim="@anim/from_left"
@@ -47,9 +44,6 @@
         android:name="com.selimozturk.monexin.ui.fragments.incomes.view.IncomesFragment"
         android:label="fragment_incomes"
         tools:layout="@layout/fragment_incomes" >
-        <action
-            android:id="@+id/action_incomesFragment_to_filterBottomSheetFragment2"
-            app:destination="@id/filterBottomSheetFragment" />
         <action
             android:id="@+id/action_incomesFragment_to_transactionDetail"
             app:destination="@id/transactionDetail"
@@ -90,28 +84,10 @@
             app:exitAnim="@anim/to_left" />
     </fragment>
     <dialog
-        android:id="@+id/filterBottomSheetFragment"
-        android:name="com.selimozturk.monexin.ui.fragments.filter_bottom_sheet.FilterBottomSheetFragment"
-        android:label="FilterBottomSheetFragment" >
-        <action
-            android:id="@+id/action_filterBottomSheetFragment_to_expensesFragment"
-            app:destination="@id/expensesFragment" />
-        <action
-            android:id="@+id/action_filterBottomSheetFragment_to_incomesFragment2"
-            app:destination="@id/incomesFragment" />
-        <action
-            android:id="@+id/action_filterBottomSheetFragment_to_dateRangePickerFragment"
-            app:destination="@id/dateRangePickerFragment" />
-    </dialog>
-    <dialog
         android:id="@+id/dateRangePickerFragment"
         android:name="com.selimozturk.monexin.ui.fragments.date_picker.DatePickerFragment"
         android:label="fragment_date_range_picker"
-        tools:layout="@layout/fragment_date_range_picker" >
-        <action
-            android:id="@+id/action_dateRangePickerFragment_to_filterBottomSheetFragment"
-            app:destination="@id/filterBottomSheetFragment" />
-    </dialog>
+        tools:layout="@layout/fragment_date_range_picker" />
     <fragment
         android:id="@+id/transactionDetail"
         android:name="com.selimozturk.monexin.ui.fragments.transaction_detail.view.TransactionDetailFragment"
@@ -153,24 +129,7 @@
         android:name="com.selimozturk.monexin.ui.fragments.camera.CameraFragment"
         android:label="CameraFragment" >
         <action
-            android:id="@+id/action_cameraFragment_to_takenPhotoFragment"
-            app:destination="@id/takenPhotoFragment"
-            app:enterAnim="@anim/from_right"
-            app:exitAnim="@anim/to_left"
-            app:popUpToInclusive="false" />
-        <action
             android:id="@+id/action_cameraFragment_to_transactionFragment"
             app:destination="@id/transactionFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/takenPhotoFragment"
-        android:name="com.selimozturk.monexin.TakenPhotoFragment"
-        android:label="fragment_taken_photo"
-        tools:layout="@layout/fragment_taken_photo" >
-        <action
-            android:id="@+id/action_takenPhotoFragment_to_transactionFragment"
-            app:destination="@id/transactionFragment"
-            app:popUpTo="@id/transactionFragment"
-            app:popUpToInclusive="true" />
     </fragment>
 </navigation>

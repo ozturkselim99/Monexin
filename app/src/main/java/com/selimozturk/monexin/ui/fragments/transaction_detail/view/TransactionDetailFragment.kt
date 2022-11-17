@@ -32,7 +32,7 @@ class TransactionDetailFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentTransactionDetailBinding.inflate(inflater, container, false)
         initViews()
         return binding.root
@@ -90,7 +90,6 @@ class TransactionDetailFragment : Fragment() {
             binding.transactionImage.setVisible(false)
             binding.transactionImageNotFoundLayout.setVisible(true)
         }
-
     }
 
     private fun deleteTransaction() {
@@ -116,7 +115,7 @@ class TransactionDetailFragment : Fragment() {
 
     private fun updateTransaction() {
         binding.transactionEditButton.setOnClickListener {
-            var direction =
+            val direction =
                 TransactionDetailFragmentDirections.actionTransactionDetailToTransactionFragment(
                     args.transaction
                 )

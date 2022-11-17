@@ -292,14 +292,16 @@
                     android:id="@+id/takenPhoto"
                     android:layout_width="match_parent"
                     android:layout_height="300dp"
-                    android:scaleType="centerCrop" />
+                    android:scaleType="centerCrop"
+                    android:contentDescription="@string/taken_photo" />
 
                 <ImageView
+                    android:contentDescription="@string/taken_photo_delete_button"
                     android:id="@+id/takenPhotoDeleteButton"
                     android:layout_width="32dp"
                     android:layout_height="32dp"
                     android:layout_alignParentTop="true"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
                     android:alpha="0.5"

@@ -37,9 +37,7 @@
             android:textSize="48sp"
             app:layout_constraintEnd_toEndOf="@+id/splashLogo"
             app:layout_constraintStart_toStartOf="@+id/splashLogo"
-            app:layout_constraintTop_toBottomOf="@+id/splashLogo">
-
-        </TextView>
+            app:layout_constraintTop_toBottomOf="@+id/splashLogo"/>
 
         <TextView
             android:layout_width="wrap_content"

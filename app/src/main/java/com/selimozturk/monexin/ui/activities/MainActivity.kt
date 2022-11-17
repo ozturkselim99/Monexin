@@ -9,9 +9,9 @@ import com.selimozturk.monexin.R
 import com.selimozturk.monexin.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 
-
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            if (destination.id == R.id.cameraFragment || destination.id == R.id.takenPhotoFragment) {
+            if (destination.id == R.id.cameraFragment) {
                 binding.bottomNavigation.visibility = View.GONE
             } else {
                 binding.bottomNavigation.visibility = View.VISIBLE
@@ -43,7 +43,6 @@ class MainActivity : AppCompatActivity() {
                 navController.popBackStack(destinationId = it.itemId, inclusive = false)
             }
         }
-
     }
 
 }

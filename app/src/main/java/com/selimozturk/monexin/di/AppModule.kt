@@ -40,6 +40,4 @@ object AppModule {
         return context.getSharedPreferences(Constants.PREFERENCES_NAME, Context.MODE_PRIVATE)
     }
 
-
-
 }

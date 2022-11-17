@@ -160,6 +160,7 @@
                     android:visibility="invisible">
 
                     <ImageView
+                        android:contentDescription="@string/no_data_image"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_image_not_found" />
@@ -169,7 +170,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:fontFamily="@font/cera_pro_medium"
-                        android:text="Transaction Image Not Found"
+                        android:text="@string/transaction_image_not_found"
                         android:textColor="@color/grey_600" />
 
                 </LinearLayout>

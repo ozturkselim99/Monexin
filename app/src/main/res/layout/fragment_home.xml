@@ -25,7 +25,7 @@
 
             <TextView
                 android:id="@+id/userDisplayNameText"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:fontFamily="@font/cera_pro_bold"
@@ -41,6 +41,8 @@
                 android:backgroundTint="@color/white"
                 android:clickable="true"
                 android:src="@drawable/ic_add_24"
+                android:contentDescription="@string/transaction_add_button"
+                android:focusable="true"
                 android:tint="@color/grey_400" />
         </LinearLayout>
 
@@ -190,7 +192,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/cera_pro_medium"
-                        android:text="Date Range"
+                        android:text="@string/date_range"
                         android:textColor="@color/white">
 
                     </TextView>
@@ -203,9 +205,8 @@
                         android:fontFamily="@font/cera_pro_medium"
                         android:text=" (All time)"
                         android:textColor="@color/white"
-                        android:textSize="10sp">
+                        android:textSize="10sp" />
 
-                    </TextView>
                 </LinearLayout>
 
                 <LinearLayout
@@ -286,8 +287,7 @@
                         android:layout_gravity="center_vertical"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_cancel"
-                        ></ImageView>
+                        android:src="@drawable/ic_cancel" />
                 </LinearLayout>
 
 
@@ -355,7 +355,6 @@
 
         </LinearLayout>
 
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -387,13 +386,14 @@
             android:id="@+id/noDataImage"
             android:layout_width="48dp"
             android:layout_height="48dp"
+            android:contentDescription="@string/no_data_image"
             android:src="@drawable/ic_not_found" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:fontFamily="@font/cera_pro_medium"
-            android:text="Transaction Not Found"
+            android:text="@string/transaction_not_found"
             android:textColor="@color/grey_600"/>
     </LinearLayout>
 

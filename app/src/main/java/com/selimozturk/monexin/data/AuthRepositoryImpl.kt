@@ -7,8 +7,7 @@ import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.firestore.FirebaseFirestore
 import com.selimozturk.monexin.utils.Resource
 import com.selimozturk.monexin.utils.await
-import java.text.SimpleDateFormat
-import java.util.*
+import com.selimozturk.monexin.utils.convertToLongTime
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
@@ -39,7 +38,8 @@ class AuthRepositoryImpl @Inject constructor(
             )?.await()
             val userMap = HashMap<String, String>()
             userMap["accountNumber"] = result.user?.uid!!
-            userMap["joinedDate"] = convertLongToTime(result.user?.metadata?.creationTimestamp!!)
+            userMap["joinedDate"] =
+                result.user?.metadata?.creationTimestamp.toString().convertToLongTime()
             userMap["name"] = name
             userMap["email"] = email
             userMap["device"] = Build.MANUFACTURER + " " + Build.MODEL
@@ -51,13 +51,8 @@ class AuthRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun signout() {
+    override fun signOut() {
         firebaseAuth.signOut()
     }
 
-    private fun convertLongToTime(time: Long): String {
-        val date = Date(time)
-        val format = SimpleDateFormat("yyyy.MM.dd HH:mm")
-        return format.format(date)
-    }
 }

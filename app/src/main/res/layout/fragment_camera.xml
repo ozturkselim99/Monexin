@@ -9,7 +9,7 @@
     <androidx.camera.view.PreviewView
         android:id="@+id/view_finder"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></androidx.camera.view.PreviewView>
+        android:layout_height="match_parent"/>
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/takePhotoButton"
@@ -17,7 +17,7 @@
         android:layout_height="72dp"
         android:layout_margin="24dp"
         android:background="@color/grey_200"
-        android:contentDescription="Take photo"
+        android:contentDescription="@string/take_photo"
         app:cardCornerRadius="50dp"
         app:layout_constraintBottom_toBottomOf="@+id/view_finder"
         app:layout_constraintEnd_toEndOf="parent"
@@ -30,7 +30,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:visibility="invisible" />
+        android:visibility="invisible"
+        android:contentDescription="@string/taken_photo" />
 
     <LinearLayout
         android:id="@+id/takenPhotoConfirmLayout"
@@ -47,7 +48,8 @@
             android:layout_weight="1"
             android:background="@color/grey_200"
             android:src="@drawable/ic_check"
-            app:tint="@color/main_color" />
+            app:tint="@color/main_color"
+            android:contentDescription="@string/accept_taken_photo" />
 
         <ImageButton
             android:layout_marginStart="16dp"
@@ -57,7 +59,8 @@
             android:layout_weight="1"
             android:background="@color/grey_200"
             android:src="@drawable/ic_cancel"
-            app:tint="@color/main_color" />
+            app:tint="@color/main_color"
+            android:contentDescription="@string/cancel_taken_photo" />
 
     </LinearLayout>
 

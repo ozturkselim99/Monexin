@@ -53,7 +53,6 @@ class TransactionFragment : Fragment() {
             Log.i("monexin", "Permission denied")
         }
     }
-
     private var resultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
@@ -245,12 +244,10 @@ class TransactionFragment : Fragment() {
                             binding.transactionAddProgressBar.setVisible(true)
                         }
                         is Resource.Failure -> {
-
                             binding.transactionAddProgressBar.setVisible(false)
                         }
                     }
                 }
-
             }
         }
     }

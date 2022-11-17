@@ -15,6 +15,7 @@ class FirebaseRepositoryImpl @Inject constructor(
     private val firebaseFirestore: FirebaseFirestore,
     private val firebaseStorage: FirebaseStorage,
 ) : FirebaseRepository {
+
     override suspend fun getProfileInfo(): Resource<UserInfo> {
         return try {
             val profileInfo =
@@ -113,8 +114,8 @@ class FirebaseRepositoryImpl @Inject constructor(
 
     override suspend fun getHomeInfo(minDate: String?, maxDate: String?): Resource<HomeInfo> {
         return try {
-            var activeExpense: Double=0.0
-            var activeIncome: Double=0.0
+            val activeExpense: Double
+            val activeIncome: Double
             val expenses =
                 firebaseFirestore.collection("users").document(firebaseAuth.currentUser?.uid!!)
                     .collection("expenses").get().await()
@@ -144,17 +145,55 @@ class FirebaseRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getExpenses(): Resource<ExpensesInfo> {
+    override suspend fun getExpenses(filterModel: FilterModel?): Resource<ExpensesInfo> {
         return try {
-            var activeExpense = 0.0
+            var activeExpense: Double
+            val expensesList: List<Transactions>
             val expenses =
                 firebaseFirestore.collection("users").document(firebaseAuth.currentUser?.uid!!)
                     .collection("expenses").get().await()
-            for (document in expenses.documents) {
-                activeExpense += document.data?.getValue("amount").toString().toDouble()
+            activeExpense = expenses.toObjects(Transactions::class.java).sumOf { it.amount }
+            if (filterModel != null) {
+                when (filterModel.bestMatchResult) {
+                    "0" -> {
+                        expensesList = expenses.toObjects(Transactions::class.java)
+                            .sortedByDescending { it.createdAt }
+                            .filter { transactions -> transactions.createdAt >= filterModel.minDate && transactions.createdAt <= filterModel.maxDate && transactions.amount >= filterModel.minAmount.toDouble() && transactions.amount <= filterModel.maxAmount.toDouble() }
+                        activeExpense = expenses.toObjects(Transactions::class.java)
+                            .filter { transactions -> transactions.createdAt >= filterModel.minDate && transactions.createdAt <= filterModel.maxDate && transactions.amount >= filterModel.minAmount.toDouble() && transactions.amount <= filterModel.maxAmount.toDouble() }
+                            .sumOf { it.amount }
+                    }
+                    "1" -> {
+                        expensesList = expenses.toObjects(Transactions::class.java)
+                            .sortedBy { it.createdAt }
+                            .filter { transactions -> transactions.createdAt >= filterModel.minDate && transactions.createdAt <= filterModel.maxDate && transactions.amount >= filterModel.minAmount.toDouble() && transactions.amount <= filterModel.maxAmount.toDouble() }
+                        activeExpense = expenses.toObjects(Transactions::class.java)
+                            .filter { transactions -> transactions.createdAt >= filterModel.minDate && transactions.createdAt <= filterModel.maxDate && transactions.amount >= filterModel.minAmount.toDouble() && transactions.amount <= filterModel.maxAmount.toDouble() }
+                            .sumOf { it.amount }
+                    }
+                    "2" -> {
+                        expensesList = expenses.toObjects(Transactions::class.java)
+                            .sortedByDescending { it.amount }
+                            .filter { transactions -> transactions.createdAt >= filterModel.minDate && transactions.createdAt <= filterModel.maxDate && transactions.amount >= filterModel.minAmount.toDouble() && transactions.amount <= filterModel.maxAmount.toDouble() }
+                        activeExpense = expenses.toObjects(Transactions::class.java)
+                            .filter { transactions -> transactions.createdAt >= filterModel.minDate && transactions.createdAt <= filterModel.maxDate && transactions.amount >= filterModel.minAmount.toDouble() && transactions.amount <= filterModel.maxAmount.toDouble() }
+                            .sumOf { it.amount }
+                    }
+                    "3" -> {
+                        expensesList = expenses.toObjects(Transactions::class.java)
+                            .sortedBy { it.amount }
+                            .filter { transactions -> transactions.createdAt >= filterModel.minDate && transactions.createdAt <= filterModel.maxDate && transactions.amount >= filterModel.minAmount.toDouble() && transactions.amount <= filterModel.maxAmount.toDouble() }
+                        activeExpense = expenses.toObjects(Transactions::class.java)
+                            .filter { transactions -> transactions.createdAt >= filterModel.minDate && transactions.createdAt <= filterModel.maxDate && transactions.amount >= filterModel.minAmount.toDouble() && transactions.amount <= filterModel.maxAmount.toDouble() }
+                            .sumOf { it.amount }
+                    }
+                    else -> throw IllegalStateException("Best Match Result")
+                }
+            } else {
+                expensesList =
+                    expenses.toObjects(Transactions::class.java).sortedByDescending { it.createdAt }
             }
-            val expensesList =
-                expenses.toObjects(Transactions::class.java).sortedByDescending { it.createdAt }
+
             Resource.Success(ExpensesInfo(activeExpense.toString(), expensesList))
         } catch (e: Exception) {
             e.printStackTrace()
@@ -162,17 +201,55 @@ class FirebaseRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getIncomes(): Resource<IncomesInfo> {
+    override suspend fun getIncomes(filterModel: FilterModel?): Resource<IncomesInfo> {
         return try {
-            var activeIncome = 0.0
+            var activeIncome: Double
+            val incomesList: List<Transactions>
             val incomes =
                 firebaseFirestore.collection("users").document(firebaseAuth.currentUser?.uid!!)
                     .collection("incomes").get().await()
-            for (document in incomes.documents) {
-                activeIncome += document.data?.getValue("amount").toString().toDouble()
+            activeIncome = incomes.toObjects(Transactions::class.java).sumOf { it.amount }
+            if (filterModel != null) {
+                when (filterModel.bestMatchResult) {
+                    "0" -> {
+                        incomesList = incomes.toObjects(Transactions::class.java)
+                            .sortedByDescending { it.createdAt }
+                            .filter { transactions -> transactions.createdAt >= filterModel.minDate && transactions.createdAt <= filterModel.maxDate && transactions.amount >= filterModel.minAmount.toDouble() && transactions.amount <= filterModel.maxAmount.toDouble() }
+                        activeIncome = incomes.toObjects(Transactions::class.java)
+                            .filter { transactions -> transactions.createdAt >= filterModel.minDate && transactions.createdAt <= filterModel.maxDate && transactions.amount >= filterModel.minAmount.toDouble() && transactions.amount <= filterModel.maxAmount.toDouble() }
+                            .sumOf { it.amount }
+                    }
+                    "1" -> {
+                        incomesList = incomes.toObjects(Transactions::class.java)
+                            .sortedBy { it.createdAt }
+                            .filter { transactions -> transactions.createdAt >= filterModel.minDate && transactions.createdAt <= filterModel.maxDate && transactions.amount >= filterModel.minAmount.toDouble() && transactions.amount <= filterModel.maxAmount.toDouble() }
+                        activeIncome = incomes.toObjects(Transactions::class.java)
+                            .filter { transactions -> transactions.createdAt >= filterModel.minDate && transactions.createdAt <= filterModel.maxDate && transactions.amount >= filterModel.minAmount.toDouble() && transactions.amount <= filterModel.maxAmount.toDouble() }
+                            .sumOf { it.amount }
+                    }
+                    "2" -> {
+                        incomesList = incomes.toObjects(Transactions::class.java)
+                            .sortedByDescending { it.amount }
+                            .filter { transactions -> transactions.createdAt >= filterModel.minDate && transactions.createdAt <= filterModel.maxDate && transactions.amount >= filterModel.minAmount.toDouble() && transactions.amount <= filterModel.maxAmount.toDouble() }
+                        activeIncome = incomes.toObjects(Transactions::class.java)
+                            .filter { transactions -> transactions.createdAt >= filterModel.minDate && transactions.createdAt <= filterModel.maxDate && transactions.amount >= filterModel.minAmount.toDouble() && transactions.amount <= filterModel.maxAmount.toDouble() }
+                            .sumOf { it.amount }
+                    }
+                    "3" -> {
+                        incomesList = incomes.toObjects(Transactions::class.java)
+                            .sortedBy { it.amount }
+                            .filter { transactions -> transactions.createdAt >= filterModel.minDate && transactions.createdAt <= filterModel.maxDate && transactions.amount >= filterModel.minAmount.toDouble() && transactions.amount <= filterModel.maxAmount.toDouble() }
+                        activeIncome = incomes.toObjects(Transactions::class.java)
+                            .filter { transactions -> transactions.createdAt >= filterModel.minDate && transactions.createdAt <= filterModel.maxDate && transactions.amount >= filterModel.minAmount.toDouble() && transactions.amount <= filterModel.maxAmount.toDouble() }
+                            .sumOf { it.amount }
+                    }
+                    else -> throw IllegalStateException("Best Match Result")
+                }
+            } else {
+                incomesList =
+                    incomes.toObjects(Transactions::class.java).sortedByDescending { it.createdAt }
             }
-            val incomesList =
-                incomes.toObjects(Transactions::class.java).sortedByDescending { it.createdAt }
+
             Resource.Success(IncomesInfo(activeIncome.toString(), incomesList))
         } catch (e: Exception) {
             e.printStackTrace()
@@ -217,4 +294,5 @@ class FirebaseRepositoryImpl @Inject constructor(
             Resource.Failure(e)
         }
     }
+
 }

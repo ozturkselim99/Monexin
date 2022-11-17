@@ -23,4 +23,5 @@ class HomeViewModel @Inject constructor(
         _homeInfoState.value= Resource.Loading
         _homeInfoState.value=repository.getHomeInfo(minDate,maxDate)
     }
+
 }

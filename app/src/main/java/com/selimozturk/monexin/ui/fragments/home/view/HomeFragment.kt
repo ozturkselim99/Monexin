@@ -5,14 +5,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.NonNull
-import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import app.futured.donut.DonutSection
 import com.selimozturk.monexin.adapter.TransactionAdapter
 import com.selimozturk.monexin.databinding.FragmentHomeBinding
@@ -38,19 +35,36 @@ class HomeFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         minDate = "0"
         maxDate = System.currentTimeMillis().toString()
         setupRecyclerview()
         getHomeInfo(minDate, maxDate)
         initViews()
+        dateRangeFilterControl()
+        dateRangeCancel()
+        return binding.root
+    }
+
+    private fun dateRangeCancel() {
+        binding.dateRangeCancelButton.setOnClickListener {
+            binding.selectedMaxDateText.text = "Max Date"
+            binding.selectedMinDateText.text = "Min Date"
+            minDate = "0"
+            maxDate = System.currentTimeMillis().toString()
+            getHomeInfo(minDate, maxDate)
+            binding.dateRangeCancelButton.setVisible(false)
+        }
+    }
+
+    private fun dateRangeFilterControl() {
         binding.selectedMinDateText.addTextChangedListener {
-            if (it.toString()!="Min Date"){
+            if (it.toString() != "Min Date") {
                 minDate = (it.toString().convertToTimestamp()).toString()
                 if (maxDate.isNotEmpty() && (minDate.toLong() >= maxDate.toLong())) {
                     context?.showToast("Minimum date must be less than the maximum date")
-                    binding.selectedMinDateText.text="Min Date"
+                    binding.selectedMinDateText.text = "Min Date"
                 } else {
                     binding.dateRangeCancelButton.setVisible(true)
                     getHomeInfo(minDate, maxDate)
@@ -58,27 +72,17 @@ class HomeFragment : Fragment() {
             }
         }
         binding.selectedMaxDateText.addTextChangedListener {
-            if(it.toString()!="Max Date"){
+            if (it.toString() != "Max Date") {
                 //86400000(1 gün) seçilen max date kapsaması için topluyorum
                 maxDate = (it.toString().convertToTimestamp() + 86400000).toString()
                 if (minDate.isNotEmpty() && (maxDate.toLong() <= minDate.toLong())) {
                     context?.showToast("Maximum date must be greater than the minimum date")
-                    binding.selectedMaxDateText.text="Max Date"
+                    binding.selectedMaxDateText.text = "Max Date"
                 } else {
                     getHomeInfo(minDate, maxDate)
                 }
             }
         }
-
-        binding.dateRangeCancelButton.setOnClickListener {
-            binding.selectedMaxDateText.text="Max Date"
-            binding.selectedMinDateText.text="Min Date"
-            minDate="0"
-            maxDate=System.currentTimeMillis().toString()
-            getHomeInfo(minDate,maxDate)
-            binding.dateRangeCancelButton.setVisible(false)
-        }
-        return binding.root
     }
 
     private fun createDonutView(activeExpense: Float, activeIncome: Float) {
@@ -109,7 +113,6 @@ class HomeFragment : Fragment() {
                 HomeFragmentDirections.actionHomeFragmentToTransactionDetail(transaction)
             findNavController().navigate(direction)
         }
-
     }
 
     private fun initViews() {
@@ -170,4 +173,5 @@ class HomeFragment : Fragment() {
         }
         datePickerFragment.show(supportFragmentManager, "DatePickerFragment")
     }
+
 }

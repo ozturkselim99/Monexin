@@ -12,17 +12,18 @@
         android:id="@+id/expensesTextAndFilterButtonLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:baselineAligned="false">
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1">
 
             <TextView
                 android:id="@+id/activeExpensesText"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:fontFamily="@font/cera_pro_medium"
                 android:text="@string/active_expenses"
                 android:textColor="@color/black"
@@ -30,9 +31,10 @@
 
             <TextView
                 android:id="@+id/expensesAmountText"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:layout_weight="1"
                 android:layout_marginStart="4dp"
                 android:fontFamily="@font/cera_pro_medium"
                 tools:text="@string/sample_expense_number"
@@ -40,21 +42,11 @@
 
         </LinearLayout>
 
-
-        <ImageView
-            android:id="@+id/expensesFilterButton"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="end"
-            android:background="?attr/selectableItemBackground"
-            android:clickable="true"
-            android:contentDescription="@string/filter_expenses_button"
-            android:focusable="true"
-            android:src="@drawable/ic_filter" />
     </LinearLayout>
 
     <TextView
-        android:id="@+id/expensesTimeText"
+        android:visibility="gone"
+        android:id="@+id/expensesFiltersText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -64,6 +56,7 @@
         app:layout_constraintTop_toBottomOf="@id/expensesTextAndFilterButtonLayout">
 
     </TextView>
+
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/expensesSearchTextContainer"
@@ -75,10 +68,11 @@
         app:boxStrokeColor="@color/grey_600"
         app:endIconMode="clear_text"
         app:hintTextColor="@color/grey_600"
-        app:layout_constraintTop_toBottomOf="@id/expensesTimeText">
+        app:layout_constraintTop_toBottomOf="@id/expensesFiltersText">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/expensesSearchInput"
+            android:saveEnabled="false"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawableStart="@drawable/ic_search"
@@ -86,6 +80,229 @@
             android:inputType="text"
             android:lines="1" />
     </com.google.android.material.textfield.TextInputLayout>
+
+    <LinearLayout
+        android:id="@+id/filtersTextLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@id/expensesSearchTextContainer">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:fontFamily="@font/cera_pro_bold"
+            android:text="@string/filters"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:id="@+id/arrowDirectionImage"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_arrow_down"
+            android:contentDescription="@string/close_and_open_filter_layout_button" />
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/filterLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/expenseTransactionsRW"
+        app:layout_constraintTop_toBottomOf="@id/filtersTextLayout">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical"
+            app:layout_constraintTop_toTopOf="parent">
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/menu"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/cera_pro_medium"
+                android:hint="@string/best_match"
+                app:boxStrokeColor="@color/grey_600"
+                app:hintTextColor="@color/grey_600">
+
+                <AutoCompleteTextView
+                    android:id="@+id/bestMatchFilterList"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:editable="false"
+                    android:fontFamily="@font/cera_pro_medium"
+                    android:inputType="none"
+                    android:saveEnabled="false" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/cera_pro_medium"
+                android:text="@string/transaction_amount"
+                android:textColor="@color/black" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/minTransactionAmountTextContainer"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="@string/min"
+                    app:boxStrokeColor="@color/grey_600"
+                    app:endIconMode="clear_text"
+                    app:hintTextColor="@color/grey_600"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/minTransactionInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/cera_pro_medium"
+                        android:inputType="numberDecimal"
+                        android:lines="1"
+                        android:saveEnabled="false" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:fontFamily="@font/cera_pro_bold"
+                    android:text="@string/brace"
+                    android:textColor="@color/grey_600"
+                    android:textSize="16sp">
+
+                </TextView>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/maxTransactionAmountTextContainer"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="@string/max"
+                    app:boxStrokeColor="@color/grey_600"
+                    app:endIconMode="clear_text"
+                    app:hintTextColor="@color/grey_600"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/maxTransactionInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/cera_pro_medium"
+                        android:inputType="numberDecimal"
+                        android:lines="1"
+                        android:saveEnabled="false" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/cera_pro_medium"
+                android:text="@string/date_range"
+                android:textColor="@color/black">
+
+            </TextView>
+
+            <LinearLayout
+                android:id="@+id/dateRangeLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/transactionMinDateLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/min_date_calendar"
+                        android:src="@drawable/ic_calendar" />
+
+                    <TextView
+                        android:id="@+id/selectedMinDateText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/cera_pro_medium"
+                        android:text="@string/min_date"
+                        android:textAlignment="center"
+                        android:textColor="@color/black">
+
+                    </TextView>
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginHorizontal="16dp"
+                    android:fontFamily="@font/cera_pro_bold"
+                    android:text="@string/brace"
+                    android:textColor="@color/grey_600"
+                    android:textSize="16sp" />
+
+                <LinearLayout
+                    android:id="@+id/transactionMaxDateLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/max_date_calendar"
+                        android:src="@drawable/ic_calendar" />
+
+                    <TextView
+                        android:id="@+id/selectedMaxDateText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/cera_pro_medium"
+                        android:text="@string/max_date"
+                        android:textAlignment="center"
+                        android:textColor="@color/black" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/filterButton"
+                style="@style/buttons"
+                android:layout_marginTop="16dp"
+                android:text="@string/filter"
+                app:cornerRadius="12dp" />
+
+
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
         android:id="@+id/transactionNotFoundLayout"
@@ -103,14 +320,15 @@
             android:id="@+id/noDataImage"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:src="@drawable/ic_not_found" />
+            android:src="@drawable/ic_not_found"
+            android:contentDescription="@string/no_data_image" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:fontFamily="@font/cera_pro_medium"
-            android:text="Transaction Not Found"
+            android:text="@string/transaction_not_found"
             android:textColor="@color/grey_600" />
     </LinearLayout>
 
@@ -120,7 +338,7 @@
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/expensesSearchTextContainer" />
+        app:layout_constraintTop_toBottomOf="@+id/filterLayout" />
 
     <ProgressBar
         android:id="@+id/expensesProgressBar"

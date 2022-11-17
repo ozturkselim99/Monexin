@@ -14,6 +14,7 @@ class SplashActivity : AppCompatActivity() {
     @Inject
     lateinit var sessionManager: SessionManager
     private lateinit var binding: ActivitySplashBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySplashBinding.inflate(layoutInflater)
@@ -32,8 +33,6 @@ class SplashActivity : AppCompatActivity() {
                 finish()
             }
         }
-
     }
-
 
 }

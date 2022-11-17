@@ -27,4 +27,5 @@ class TransactionDetailViewModel @Inject constructor(
         _transactionImageState.value=Resource.Loading
         _transactionImageState.value=repository.downloadTransactionImage(url)
     }
+
 }

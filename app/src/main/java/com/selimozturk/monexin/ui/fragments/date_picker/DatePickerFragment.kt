@@ -15,7 +15,6 @@ class DatePickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener{
     private val calendar = Calendar.getInstance()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-
         val dialog = DatePickerDialog(
             requireActivity(), this,
             calendar.get(Calendar.YEAR),  calendar.get(Calendar.MONTH),
@@ -34,9 +33,6 @@ class DatePickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener{
         val selectedDateBundle = Bundle()
         selectedDateBundle.putString("SELECTED_DATE", selectedDate)
         setFragmentResult("REQUEST_KEY", selectedDateBundle)
-
     }
-
-
 
 }

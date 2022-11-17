@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.selimozturk.monexin.data.FirebaseRepository
 import com.selimozturk.monexin.model.ExpensesInfo
+import com.selimozturk.monexin.model.FilterModel
 import com.selimozturk.monexin.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -19,8 +20,9 @@ class ExpensesViewModel @Inject constructor(
     private val _expensesState = MutableLiveData<Resource<ExpensesInfo>>(null)
     val expensesState : LiveData<Resource<ExpensesInfo>> = _expensesState
 
-    fun getExpenses()=viewModelScope.launch {
-        _expensesState.value= Resource.Loading
-        _expensesState.value=repository.getExpenses()
+    fun getExpenses(filterModel: FilterModel?) = viewModelScope.launch {
+        _expensesState.value = Resource.Loading
+        _expensesState.value = repository.getExpenses(filterModel)
     }
+
 }

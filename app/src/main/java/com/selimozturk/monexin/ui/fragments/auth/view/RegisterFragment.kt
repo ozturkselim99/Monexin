@@ -17,21 +17,17 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class RegisterFragment : Fragment() {
+
     private lateinit var binding: FragmentRegisterBinding
     private val authViewModel by viewModels<AuthViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
+    ): View {
         binding = FragmentRegisterBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         initViews()
+        return binding.root
     }
 
     private fun initViews(){
@@ -65,4 +61,5 @@ class RegisterFragment : Fragment() {
             }
         }
     }
+
 }

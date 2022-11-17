@@ -1,7 +1,5 @@
 package com.selimozturk.monexin.model
-
 import java.io.Serializable
-
 
 data class Transactions(
     var id:String="",

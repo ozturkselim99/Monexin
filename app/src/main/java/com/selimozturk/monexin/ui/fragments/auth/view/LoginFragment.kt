@@ -30,8 +30,7 @@ class LoginFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
+    ): View {
         binding = FragmentLoginBinding.inflate(inflater, container, false)
         initViews()
         return binding.root
@@ -71,4 +70,5 @@ class LoginFragment : Fragment() {
             }
         }
     }
+
 }

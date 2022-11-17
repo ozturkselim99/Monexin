@@ -31,6 +31,7 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 class CameraFragment : Fragment() {
+
     private var preview: Preview? = null
     private var imageCapture: ImageCapture? = null
     private var camera: Camera? = null
@@ -50,7 +51,7 @@ class CameraFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         cameraExecutor = Executors.newSingleThreadExecutor()
         outputDirectory = getOutputDirectory()
         binding = FragmentCameraBinding.inflate(inflater, container, false)
@@ -160,4 +161,5 @@ class CameraFragment : Fragment() {
         return if (mediaDir != null && mediaDir.exists())
             mediaDir else requireContext().filesDir
     }
+
 }

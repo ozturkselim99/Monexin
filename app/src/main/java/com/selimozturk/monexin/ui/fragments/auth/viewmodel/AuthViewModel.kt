@@ -23,18 +23,19 @@ class AuthViewModel@Inject constructor(
     val registerState: LiveData<Resource<FirebaseUser>?> = _registerState
 
     fun login(email: String, password: String) = viewModelScope.launch {
-        _loginState.value= Resource.Loading
-        _loginState.value=repository.login(email, password)
+        _loginState.value = Resource.Loading
+        _loginState.value = repository.login(email, password)
     }
 
     fun register(name: String, email: String, password: String) = viewModelScope.launch {
-        _registerState.value= Resource.Loading
-        _registerState.value=repository.register(name,email, password)
+        _registerState.value = Resource.Loading
+        _registerState.value = repository.register(name, email, password)
     }
 
-    fun signout() {
-        repository.signout()
+    fun signOut() {
+        repository.signOut()
         _loginState.value = null
         _registerState.value = null
     }
+
 }

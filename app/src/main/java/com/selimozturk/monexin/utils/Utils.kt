@@ -5,7 +5,6 @@ import android.view.View
 import android.widget.Toast
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
-import java.sql.Timestamp
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -34,7 +33,7 @@ fun View.setVisible(visible: Boolean) {
 
 fun String.convertToLongTime():String{
         val date = Date(this.toLong())
-        val format = SimpleDateFormat("dd.MM.yyyy HH:mm")
+        val format = SimpleDateFormat("dd-MM-yyyy")
         return format.format(date).toString()
 }
 
