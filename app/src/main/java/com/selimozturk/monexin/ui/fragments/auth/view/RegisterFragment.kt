@@ -35,13 +35,14 @@ class RegisterFragment : Fragment() {
             findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
         }
         binding.registerBackButton.setOnClickListener {
-            requireActivity().onBackPressed()
+            findNavController().popBackStack()
         }
-        register()
+        binding.registerButton.setOnClickListener {
+            register()
+        }
     }
 
     private fun register(){
-        binding.registerButton.setOnClickListener{
             authViewModel.register(binding.fullNameInput.text.toString(),binding.emailInput.text.toString(),binding.passwordInput.text.toString())
             authViewModel.registerState.observe(viewLifecycleOwner){
                 when(it){
@@ -59,7 +60,6 @@ class RegisterFragment : Fragment() {
                     }
                 }
             }
-        }
     }
 
 }

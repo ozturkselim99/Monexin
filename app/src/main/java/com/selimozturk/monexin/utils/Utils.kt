@@ -33,7 +33,7 @@ fun View.setVisible(visible: Boolean) {
 
 fun String.convertToLongTime():String{
         val date = Date(this.toLong())
-        val format = SimpleDateFormat("dd-MM-yyyy")
+        val format = SimpleDateFormat("dd-MM-yyyy HH:mm")
         return format.format(date).toString()
 }
 

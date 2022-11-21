@@ -40,11 +40,12 @@ class LoginFragment : Fragment() {
         binding.registerButton.setOnClickListener {
             findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
         }
-        login()
+        binding.loginButton.setOnClickListener {
+            login()
+        }
     }
 
     private fun login() {
-        binding.loginButton.setOnClickListener {
             authViewModel.login(
                 binding.emailInput.text.toString(),
                 binding.passwordInput.text.toString()
@@ -68,7 +69,6 @@ class LoginFragment : Fragment() {
                     }
                 }
             }
-        }
     }
 
 }

@@ -56,10 +56,14 @@ class CameraFragment : Fragment() {
         outputDirectory = getOutputDirectory()
         binding = FragmentCameraBinding.inflate(inflater, container, false)
         requestCameraPermission()
+        initViews()
+        return binding.root
+    }
+
+    private fun initViews() {
         binding.takePhotoButton.setOnClickListener {
             takePhoto()
         }
-        return binding.root
     }
 
     private fun requestCameraPermission() {
@@ -132,26 +136,26 @@ class CameraFragment : Fragment() {
             Glide.with(requireContext())
                 .load(uri)
                 .into(binding.takenPhoto)
-            acceptTakenPhoto(uri)
-            cancelTakenPhoto(uri)
+            binding.acceptTakenPhoto.setOnClickListener {
+                acceptTakenPhoto(uri)
+            }
+            binding.cancelTakenPhoto.setOnClickListener {
+                cancelTakenPhoto(uri)
+            }
         }
     }
 
     private fun acceptTakenPhoto(uri: Uri) {
-        binding.acceptTakenPhoto.setOnClickListener {
             findNavController().previousBackStackEntry?.savedStateHandle?.set("Uri", uri)
             findNavController().popBackStack()
-        }
     }
 
     private fun cancelTakenPhoto(uri: Uri) {
-        binding.cancelTakenPhoto.setOnClickListener {
             uri.toFile().delete()
             binding.viewFinder.setVisible(true)
             binding.takePhotoButton.setVisible(true)
             binding.takenPhoto.setVisible(false)
             binding.takenPhotoConfirmLayout.setVisible(false)
-        }
     }
 
     private fun getOutputDirectory(): File {

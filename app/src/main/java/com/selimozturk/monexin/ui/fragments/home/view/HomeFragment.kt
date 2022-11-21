@@ -27,8 +27,8 @@ import dagger.hilt.android.AndroidEntryPoint
 class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
-    private lateinit var minDate: String
-    private lateinit var maxDate: String
+    private var minDate: String= "0"
+    private var maxDate: String=System.currentTimeMillis().toString()
     private val homeViewModel by viewModels<HomeViewModel>()
     private val adapter = TransactionAdapter()
 
@@ -43,19 +43,16 @@ class HomeFragment : Fragment() {
         getHomeInfo(minDate, maxDate)
         initViews()
         dateRangeFilterControl()
-        dateRangeCancel()
         return binding.root
     }
 
-    private fun dateRangeCancel() {
-        binding.dateRangeCancelButton.setOnClickListener {
+    private fun dateRangeFilterClear() {
             binding.selectedMaxDateText.text = "Max Date"
             binding.selectedMinDateText.text = "Min Date"
             minDate = "0"
             maxDate = System.currentTimeMillis().toString()
             getHomeInfo(minDate, maxDate)
-            binding.dateRangeCancelButton.setVisible(false)
-        }
+            binding.dateRangeClearButton.setVisible(false)
     }
 
     private fun dateRangeFilterControl() {
@@ -66,7 +63,7 @@ class HomeFragment : Fragment() {
                     context?.showToast("Minimum date must be less than the maximum date")
                     binding.selectedMinDateText.text = "Min Date"
                 } else {
-                    binding.dateRangeCancelButton.setVisible(true)
+                    binding.dateRangeClearButton.setVisible(true)
                     getHomeInfo(minDate, maxDate)
                 }
             }
@@ -87,13 +84,13 @@ class HomeFragment : Fragment() {
 
     private fun createDonutView(activeExpense: Float, activeIncome: Float) {
         val section1 = DonutSection(
-            name = "section_1",
+            name = "expense",
             color = Color.parseColor("#FB1D32"),
             amount = activeExpense,
         )
 
         val section2 = DonutSection(
-            name = "section_2",
+            name = "income",
             color = Color.parseColor("#FFB98E"),
             amount = activeIncome,
         )
@@ -125,6 +122,9 @@ class HomeFragment : Fragment() {
         binding.addTransactionButton.setOnClickListener {
             val direction = HomeFragmentDirections.actionHomeFragmentToTransactionFragment(null)
             findNavController().navigate(direction)
+        }
+        binding.dateRangeClearButton.setOnClickListener {
+            dateRangeFilterClear()
         }
     }
 

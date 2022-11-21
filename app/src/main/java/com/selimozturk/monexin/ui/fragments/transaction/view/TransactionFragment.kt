@@ -67,7 +67,6 @@ class TransactionFragment : Fragment() {
         binding = FragmentTransactionBinding.inflate(inflater, container, false)
         getTakenPhoto()
         initViews()
-        deleteTakenPhoto()
         return binding.root
     }
 
@@ -108,15 +107,22 @@ class TransactionFragment : Fragment() {
         if (args.transactionUpdate != null) {
             binding.addTransactionButton.text = "Update Transaction"
             bindTransactionToInputs()
-            updateTransaction()
+            binding.addTransactionButton.setOnClickListener {
+                updateTransaction()
+            }
         } else {
-            addTransaction()
+            binding.addTransactionButton.setOnClickListener {
+                addTransaction()
+            }
         }
         binding.transactionCameraButton.setOnClickListener {
             findNavController().navigate(R.id.action_transactionFragment_to_cameraFragment)
         }
         binding.transactionImageButton.setOnClickListener {
             requestGalleryPermission()
+        }
+        binding.takenPhotoDeleteButton.setOnClickListener {
+            deleteTakenPhoto()
         }
     }
 
@@ -152,17 +158,14 @@ class TransactionFragment : Fragment() {
     }
 
     private fun deleteTakenPhoto() {
-        binding.takenPhotoDeleteButton.setOnClickListener {
             args.transactionUpdate?.photoPath = ""
             photoUri = null
             binding.transactionAttachmentLayout.setVisible(true)
             binding.takenPhotoLayout.visibility = View.GONE
-        }
     }
 
     private fun addTransaction() {
         val dialog = Dialog(requireContext())
-        binding.addTransactionButton.setOnClickListener {
             if (isInputsEmpty() && isRadioButtonChecked()) {
                 val title = binding.transactionTitleInput.text.toString()
                 val description = binding.transactionDescriptionInput.text.toString()
@@ -208,11 +211,9 @@ class TransactionFragment : Fragment() {
                     }
                 }
             }
-        }
     }
 
     private fun updateTransaction() {
-        binding.addTransactionButton.setOnClickListener {
             if (isInputsEmpty() && isRadioButtonChecked()) {
                 val title = binding.transactionTitleInput.text.toString()
                 val description = binding.transactionDescriptionInput.text.toString()
@@ -244,12 +245,12 @@ class TransactionFragment : Fragment() {
                             binding.transactionAddProgressBar.setVisible(true)
                         }
                         is Resource.Failure -> {
+                            context?.showToast(it.exception.message.toString())
                             binding.transactionAddProgressBar.setVisible(false)
                         }
                     }
                 }
             }
-        }
     }
 
     private fun bindTransactionToInputs() {

@@ -34,15 +34,18 @@ class TransactionDetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentTransactionDetailBinding.inflate(inflater, container, false)
+        getTransactionDetail()
         initViews()
         return binding.root
     }
 
     private fun initViews() {
-        getTransactionDetail()
-        deleteTransaction()
-        updateTransaction()
-
+        binding.transactionEditButton.setOnClickListener {
+            updateTransaction()
+        }
+        binding.transactionDetailDeleteButton.setOnClickListener {
+            deleteTransaction()
+        }
         binding.transactionDetailBackButton.setOnClickListener {
             findNavController().popBackStack()
         }
@@ -93,7 +96,6 @@ class TransactionDetailFragment : Fragment() {
     }
 
     private fun deleteTransaction() {
-        binding.transactionDetailDeleteButton.setOnClickListener {
             val dialogBinding: TransactionDeleteDialogBinding =
                 TransactionDeleteDialogBinding.inflate(layoutInflater)
             val builder = AlertDialog.Builder(requireContext()).setView(dialogBinding.root).show()
@@ -110,17 +112,14 @@ class TransactionDetailFragment : Fragment() {
                 findNavController().popBackStack()
                 builder.dismiss()
             }
-        }
     }
 
     private fun updateTransaction() {
-        binding.transactionEditButton.setOnClickListener {
             val direction =
                 TransactionDetailFragmentDirections.actionTransactionDetailToTransactionFragment(
                     args.transaction
                 )
             findNavController().navigate(direction)
-        }
     }
 
 }

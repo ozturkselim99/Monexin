@@ -47,7 +47,8 @@ class IncomesFragment : Fragment() {
         setupRecyclerview()
         initViews()
         getIncomes(null)
-        getIncomesByFilters()
+        initBestMatchFilterList()
+        dateFilterControl()
         return binding.root
     }
 
@@ -67,7 +68,6 @@ class IncomesFragment : Fragment() {
     }
 
     private fun expandableFilterLayout() {
-        binding.filtersTextLayout.setOnClickListener {
             if (binding.filterLayout.visibility == View.GONE) {
                 TransitionManager.beginDelayedTransition(
                     binding.filterLayout,
@@ -80,25 +80,28 @@ class IncomesFragment : Fragment() {
                 binding.arrowDirectionImage.setImageResource(R.drawable.ic_arrow_down)
                 binding.filterLayout.visibility = View.GONE
             }
-        }
     }
 
     private fun getIncomesByFilters() {
-        binding.filterButton.setOnClickListener {
-            minAmount = binding.minTransactionInput.text.toString().ifEmpty {
-                Double.MIN_VALUE.toString()
-            }
-            maxAmount = binding.maxTransactionInput.text.toString().ifEmpty {
-                Double.MAX_VALUE.toString()
-            }
-            getIncomes(FilterModel(bestMatchResult, minAmount, maxAmount, minDate, maxDate))
+        minAmount = binding.minTransactionInput.text.toString().ifEmpty {
+            Double.MIN_VALUE.toString()
         }
+        maxAmount = binding.maxTransactionInput.text.toString().ifEmpty {
+            Double.MAX_VALUE.toString()
+        }
+        getIncomes(FilterModel(bestMatchResult, minAmount, maxAmount, minDate, maxDate))
+        TransitionManager.beginDelayedTransition(binding.filterLayout, AutoTransition())
+        binding.arrowDirectionImage.setImageResource(R.drawable.ic_arrow_down)
+        binding.filterLayout.visibility = View.GONE
     }
 
     private fun initViews() {
-        initBestMatchFilterList()
-        dateFilterControl()
-        expandableFilterLayout()
+        binding.filtersTextLayout.setOnClickListener {
+            expandableFilterLayout()
+        }
+        binding.filterButton.setOnClickListener {
+            getIncomesByFilters()
+        }
         binding.transactionMinDateLayout.setOnClickListener {
             datePicker(0)
         }
@@ -116,7 +119,7 @@ class IncomesFragment : Fragment() {
             ArrayAdapter(requireContext(), R.layout.dropdown_item, bestMatchFilterList)
         binding.bestMatchFilterList.setAdapter(arrayAdapter)
         binding.bestMatchFilterList.onItemClickListener =
-            AdapterView.OnItemClickListener { parent, view, position, id ->
+            AdapterView.OnItemClickListener { _, _, position, _ ->
                 bestMatchResult = position.toString()
             }
     }

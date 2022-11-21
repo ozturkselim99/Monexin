@@ -36,13 +36,17 @@ class ProfileFragment : Fragment() {
     ): View {
         binding = FragmentProfileBinding.inflate(inflater, container, false)
         initViews()
+        getProfileInfo()
         return binding.root
     }
 
     private fun initViews() {
-        getProfileInfo()
-        clearAppData()
-        signOut()
+        binding.profileClearAppDataButton.setOnClickListener {
+            clearAppData()
+        }
+        binding.signOutButton.setOnClickListener {
+            signOut()
+        }
     }
 
     private fun getProfileInfo() {
@@ -69,7 +73,6 @@ class ProfileFragment : Fragment() {
     }
 
     private fun signOut() {
-        binding.signOutButton.setOnClickListener {
             val dialogBinding: SignOutDialogBinding =
                 SignOutDialogBinding.inflate(layoutInflater)
             val builder = AlertDialog.Builder(requireContext()).setView(dialogBinding.root).show()
@@ -84,11 +87,9 @@ class ProfileFragment : Fragment() {
             dialogBinding.signOutCancelButton.setOnClickListener {
                 builder.dismiss()
             }
-        }
     }
 
     private fun clearAppData() {
-        binding.profileClearAppDataButton.setOnClickListener {
             val dialogBinding: ClearDataDialogBinding =
                 ClearDataDialogBinding.inflate(layoutInflater)
             val builder = AlertDialog.Builder(requireContext()).setView(dialogBinding.root).show()
@@ -99,7 +100,6 @@ class ProfileFragment : Fragment() {
             dialogBinding.clearTransactionCancelButton.setOnClickListener {
                 builder.dismiss()
             }
-        }
     }
 
 }

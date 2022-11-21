@@ -262,15 +262,11 @@ class FirebaseRepositoryImpl @Inject constructor(
             val expenses =
                 firebaseFirestore.collection("users").document(firebaseAuth.currentUser?.uid!!)
                     .collection("expenses").get().await()
-            for (it in expenses.documents) {
-                it.reference.delete()
-            }
+            expenses.forEach{document->document.reference.delete()}
             val incomes =
                 firebaseFirestore.collection("users").document(firebaseAuth.currentUser?.uid!!)
                     .collection("incomes").get().await()
-            for (it in incomes.documents) {
-                it.reference.delete()
-            }
+            incomes.forEach{document->document.reference.delete()}
         } catch (e: Exception) {
             e.printStackTrace()
         }

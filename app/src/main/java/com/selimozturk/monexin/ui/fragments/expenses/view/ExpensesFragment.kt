@@ -47,7 +47,8 @@ class ExpensesFragment : Fragment() {
         setupRecyclerview()
         initViews()
         getExpenses(null)
-        getExpensesByFilters()
+        initBestMatchFilterList()
+        dateFilterControl()
         return binding.root
     }
 
@@ -67,7 +68,6 @@ class ExpensesFragment : Fragment() {
     }
 
     private fun expandableFilterLayout() {
-        binding.filtersTextLayout.setOnClickListener {
             if (binding.filterLayout.visibility == View.GONE) {
                 TransitionManager.beginDelayedTransition(
                     binding.filterLayout,
@@ -80,25 +80,28 @@ class ExpensesFragment : Fragment() {
                 binding.arrowDirectionImage.setImageResource(R.drawable.ic_arrow_down)
                 binding.filterLayout.visibility = View.GONE
             }
-        }
     }
 
     private fun getExpensesByFilters() {
-        binding.filterButton.setOnClickListener {
-            minAmount = binding.minTransactionInput.text.toString().ifEmpty {
-                Double.MIN_VALUE.toString()
-            }
-            maxAmount = binding.maxTransactionInput.text.toString().ifEmpty {
-                Double.MAX_VALUE.toString()
-            }
-            getExpenses(FilterModel(bestMatchResult, minAmount, maxAmount, minDate, maxDate))
+        minAmount = binding.minTransactionInput.text.toString().ifEmpty {
+            Double.MIN_VALUE.toString()
         }
+        maxAmount = binding.maxTransactionInput.text.toString().ifEmpty {
+            Double.MAX_VALUE.toString()
+        }
+        getExpenses(FilterModel(bestMatchResult, minAmount, maxAmount, minDate, maxDate))
+        TransitionManager.beginDelayedTransition(binding.filterLayout, AutoTransition())
+        binding.arrowDirectionImage.setImageResource(R.drawable.ic_arrow_down)
+        binding.filterLayout.visibility = View.GONE
     }
 
     private fun initViews() {
-        initBestMatchFilterList()
-        dateFilterControl()
-        expandableFilterLayout()
+        binding.filtersTextLayout.setOnClickListener {
+            expandableFilterLayout()
+        }
+        binding.filterButton.setOnClickListener {
+            getExpensesByFilters()
+        }
         binding.transactionMinDateLayout.setOnClickListener {
             datePicker(0)
         }

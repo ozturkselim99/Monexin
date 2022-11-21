@@ -281,7 +281,7 @@
                     </LinearLayout>
                     <ImageView
                         android:visibility="invisible"
-                        android:id="@+id/dateRangeCancelButton"
+                        android:id="@+id/dateRangeClearButton"
                         app:tint="@color/white"
                         android:layout_marginStart="8dp"
                         android:layout_gravity="center_vertical"
