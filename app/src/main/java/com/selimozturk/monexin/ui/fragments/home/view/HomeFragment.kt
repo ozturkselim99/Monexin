@@ -11,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.futured.donut.DonutSection
+import com.selimozturk.monexin.R
 import com.selimozturk.monexin.adapter.TransactionAdapter
 import com.selimozturk.monexin.databinding.FragmentHomeBinding
 import com.selimozturk.monexin.model.Transactions
@@ -47,12 +48,12 @@ class HomeFragment : Fragment() {
     }
 
     private fun dateRangeFilterClear() {
-            binding.selectedMaxDateText.text = "Max Date"
-            binding.selectedMinDateText.text = "Min Date"
-            minDate = "0"
-            maxDate = System.currentTimeMillis().toString()
-            getHomeInfo(minDate, maxDate)
-            binding.dateRangeClearButton.setVisible(false)
+        binding.selectedMaxDateText.setText(R.string.max_date)
+        binding.selectedMinDateText.setText(R.string.min_date)
+        minDate = "0"
+        maxDate = System.currentTimeMillis().toString()
+        getHomeInfo(minDate, maxDate)
+        binding.dateRangeClearButton.setVisible(false)
     }
 
     private fun dateRangeFilterControl() {
@@ -61,7 +62,7 @@ class HomeFragment : Fragment() {
                 minDate = (it.toString().convertToTimestamp()).toString()
                 if (maxDate.isNotEmpty() && (minDate.toLong() >= maxDate.toLong())) {
                     context?.showToast("Minimum date must be less than the maximum date")
-                    binding.selectedMinDateText.text = "Min Date"
+                    binding.selectedMinDateText.setText(R.string.min_date)
                 } else {
                     binding.dateRangeClearButton.setVisible(true)
                     getHomeInfo(minDate, maxDate)
@@ -74,7 +75,7 @@ class HomeFragment : Fragment() {
                 maxDate = (it.toString().convertToTimestamp() + 86400000).toString()
                 if (minDate.isNotEmpty() && (maxDate.toLong() <= minDate.toLong())) {
                     context?.showToast("Maximum date must be greater than the minimum date")
-                    binding.selectedMaxDateText.text = "Max Date"
+                    binding.selectedMaxDateText.setText(R.string.max_date)
                 } else {
                     getHomeInfo(minDate, maxDate)
                 }
@@ -141,7 +142,7 @@ class HomeFragment : Fragment() {
                         it.result.activeExpense.toFloat(),
                         it.result.activeIncome.toFloat()
                     )
-                    binding.transactionNotFoundLayout.setVisible(it.result.recentlyAdded.isEmpty())
+                    binding.transactionNotFoundText.setVisible(it.result.recentlyAdded.isEmpty())
                     loadTransactions(it.result.recentlyAdded)
                 }
                 is Resource.Loading -> {

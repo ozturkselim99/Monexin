@@ -105,7 +105,7 @@ class TransactionFragment : Fragment() {
             findNavController().popBackStack()
         }
         if (args.transactionUpdate != null) {
-            binding.addTransactionButton.text = "Update Transaction"
+            binding.addTransactionButton.setText(R.string.update_transaction)
             bindTransactionToInputs()
             binding.addTransactionButton.setOnClickListener {
                 updateTransaction()
@@ -149,7 +149,7 @@ class TransactionFragment : Fragment() {
         } else {
             filePath = uri?.path
         }
-        photoUri = Uri.fromFile(File(filePath))
+        photoUri = Uri.fromFile(File(filePath!!))
         binding.transactionAttachmentLayout.visibility = View.GONE
         binding.takenPhotoLayout.setVisible(true)
         Glide.with(requireContext())

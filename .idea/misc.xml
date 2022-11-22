@@ -27,13 +27,15 @@
         <entry key="..\:/Users/SELIM/AndroidStudioProjects/monexin/app/src/main/res/layout/add_income_dialog.xml" value="0.20153985507246377" />
         <entry key="..\:/Users/SELIM/AndroidStudioProjects/monexin/app/src/main/res/layout/clear_data_dialog.xml" value="0.1956521739130435" />
         <entry key="..\:/Users/SELIM/AndroidStudioProjects/monexin/app/src/main/res/layout/dropdown_item.xml" value="0.1" />
+        <entry key="..\:/Users/SELIM/AndroidStudioProjects/monexin/app/src/main/res/layout/filter_transaction_layout.xml" value="0.12310030395136778" />
+        <entry key="..\:/Users/SELIM/AndroidStudioProjects/monexin/app/src/main/res/layout/filters_layout.xml" value="0.12360688956433637" />
         <entry key="..\:/Users/SELIM/AndroidStudioProjects/monexin/app/src/main/res/layout/fragment_camera.xml" value="0.264" />
         <entry key="..\:/Users/SELIM/AndroidStudioProjects/monexin/app/src/main/res/layout/fragment_date_picker.xml" value="0.11302083333333333" />
         <entry key="..\:/Users/SELIM/AndroidStudioProjects/monexin/app/src/main/res/layout/fragment_date_range_picker.xml" value="0.12360688956433637" />
         <entry key="..\:/Users/SELIM/AndroidStudioProjects/monexin/app/src/main/res/layout/fragment_deneme.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/SELIM/AndroidStudioProjects/monexin/app/src/main/res/layout/fragment_expenses.xml" value="0.264" />
+        <entry key="..\:/Users/SELIM/AndroidStudioProjects/monexin/app/src/main/res/layout/fragment_expenses.xml" value="0.2" />
         <entry key="..\:/Users/SELIM/AndroidStudioProjects/monexin/app/src/main/res/layout/fragment_filter_bottom_sheet.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/SELIM/AndroidStudioProjects/monexin/app/src/main/res/layout/fragment_home.xml" value="0.2" />
+        <entry key="..\:/Users/SELIM/AndroidStudioProjects/monexin/app/src/main/res/layout/fragment_home.xml" value="0.24675324675324675" />
         <entry key="..\:/Users/SELIM/AndroidStudioProjects/monexin/app/src/main/res/layout/fragment_incomes.xml" value="0.2" />
         <entry key="..\:/Users/SELIM/AndroidStudioProjects/monexin/app/src/main/res/layout/fragment_login.xml" value="0.264" />
         <entry key="..\:/Users/SELIM/AndroidStudioProjects/monexin/app/src/main/res/layout/fragment_profile.xml" value="0.25416666666666665" />

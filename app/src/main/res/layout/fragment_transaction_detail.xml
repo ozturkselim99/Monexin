@@ -150,30 +150,17 @@
                     android:layout_centerInParent="true"
                     android:visibility="invisible" />
 
-                <LinearLayout
-                    android:id="@+id/transactionImageNotFoundLayout"
+                <TextView
+                    android:id="@+id/transactionImageNotFoundText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical"
-                    android:visibility="invisible">
-
-                    <ImageView
-                        android:contentDescription="@string/no_data_image"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_image_not_found" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:fontFamily="@font/cera_pro_medium"
-                        android:text="@string/transaction_image_not_found"
-                        android:textColor="@color/grey_600" />
-
-                </LinearLayout>
+                    android:drawablePadding="8dp"
+                    android:fontFamily="@font/cera_pro_medium"
+                    android:text="@string/transaction_image_not_found"
+                    android:textColor="@color/grey_600"
+                    android:visibility="invisible"
+                    app:drawableTopCompat="@drawable/ic_image_not_found" />
 
                 <ImageView
                     android:id="@+id/transactionImage"

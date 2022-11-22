@@ -117,6 +117,8 @@
     <string name="transaction_add_button">Transaction add button</string>
     <string name="taken_photo_delete_button">Taken photo delete button</string>
     <string name="transaction_image_not_found">Transaction Image Not Found</string>
+    <string name="clear_date_range_button">Clear date range button</string>
+    <string name="update_transaction">Update Transaction</string>
     <string-array name="bestMatchFilterList">
         <item>Descending by date</item>
         <item>Ascending by date</item>

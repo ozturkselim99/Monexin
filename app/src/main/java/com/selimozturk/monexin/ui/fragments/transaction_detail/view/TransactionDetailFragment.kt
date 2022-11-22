@@ -91,7 +91,7 @@ class TransactionDetailFragment : Fragment() {
             }
         } else {
             binding.transactionImage.setVisible(false)
-            binding.transactionImageNotFoundLayout.setVisible(true)
+            binding.transactionImageNotFoundText.setVisible(true)
         }
     }
 

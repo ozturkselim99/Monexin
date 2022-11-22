@@ -193,9 +193,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/cera_pro_medium"
                         android:text="@string/date_range"
-                        android:textColor="@color/white">
-
-                    </TextView>
+                        android:textColor="@color/white" />
 
                     <TextView
                         android:id="@+id/dateRangeText"
@@ -279,6 +277,7 @@
                             android:textAlignment="center"
                             android:textColor="@color/white" />
                     </LinearLayout>
+
                     <ImageView
                         android:visibility="invisible"
                         android:id="@+id/dateRangeClearButton"
@@ -287,6 +286,7 @@
                         android:layout_gravity="center_vertical"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:contentDescription="@string/clear_date_range_button"
                         android:src="@drawable/ic_cancel" />
                 </LinearLayout>
 
@@ -370,32 +370,20 @@
         android:textSize="16sp"
         app:layout_constraintTop_toBottomOf="@id/example" />
 
-    <LinearLayout
-        android:id="@+id/transactionNotFoundLayout"
+    <TextView
+        android:id="@+id/transactionNotFoundText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
+        android:drawablePadding="8dp"
+        android:fontFamily="@font/cera_pro_medium"
+        android:text="@string/transaction_not_found"
+        android:textColor="@color/grey_600"
         android:visibility="invisible"
+        app:drawableTopCompat="@drawable/ic_not_found"
         app:layout_constraintBottom_toBottomOf="@+id/transactionsRW"
         app:layout_constraintEnd_toEndOf="@+id/transactionsRW"
         app:layout_constraintStart_toStartOf="@+id/transactionsRW"
-        app:layout_constraintTop_toTopOf="@+id/transactionsRW">
-
-        <ImageView
-            android:id="@+id/noDataImage"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:contentDescription="@string/no_data_image"
-            android:src="@drawable/ic_not_found" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/cera_pro_medium"
-            android:text="@string/transaction_not_found"
-            android:textColor="@color/grey_600"/>
-    </LinearLayout>
+        app:layout_constraintTop_toTopOf="@+id/transactionsRW" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/transactionsRW"

@@ -2,7 +2,9 @@ package com.selimozturk.monexin.utils
 
 import android.content.Context
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.DrawableRes
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import java.text.DateFormat
@@ -41,6 +43,10 @@ fun String.convertToTimestamp():Long{
     val formatter: DateFormat = SimpleDateFormat("dd-MM-yyyy")
     val date = formatter.parse(this) as Date
     return (date.time)
+}
+
+fun TextView.rightDrawable(@DrawableRes id: Int = 0) {
+    this.setCompoundDrawablesWithIntrinsicBounds(0, 0, id, 0)
 }
 
 

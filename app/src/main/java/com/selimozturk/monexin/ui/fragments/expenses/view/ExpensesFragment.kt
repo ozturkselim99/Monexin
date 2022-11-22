@@ -20,10 +20,7 @@ import com.selimozturk.monexin.model.FilterModel
 import com.selimozturk.monexin.model.Transactions
 import com.selimozturk.monexin.ui.fragments.date_picker.DatePickerFragment
 import com.selimozturk.monexin.ui.fragments.expenses.viewmodel.ExpensesViewModel
-import com.selimozturk.monexin.utils.Resource
-import com.selimozturk.monexin.utils.convertToTimestamp
-import com.selimozturk.monexin.utils.setVisible
-import com.selimozturk.monexin.utils.showToast
+import com.selimozturk.monexin.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -68,44 +65,44 @@ class ExpensesFragment : Fragment() {
     }
 
     private fun expandableFilterLayout() {
-            if (binding.filterLayout.visibility == View.GONE) {
+            if (binding.filtersLayout.filters.visibility == View.GONE) {
                 TransitionManager.beginDelayedTransition(
-                    binding.filterLayout,
+                    binding.filtersLayout.filters,
                     AutoTransition()
                 )
-                binding.arrowDirectionImage.setImageResource(R.drawable.ic_arrow_up)
-                binding.filterLayout.visibility = View.VISIBLE
+                binding.filtersText.rightDrawable(R.drawable.ic_arrow_up)
+                binding.filtersLayout.filters.visibility = View.VISIBLE
             } else {
-                TransitionManager.beginDelayedTransition(binding.filterLayout, AutoTransition())
-                binding.arrowDirectionImage.setImageResource(R.drawable.ic_arrow_down)
-                binding.filterLayout.visibility = View.GONE
+                TransitionManager.beginDelayedTransition(binding.filtersLayout.filters, AutoTransition())
+                binding.filtersText.rightDrawable(R.drawable.ic_arrow_down)
+                binding.filtersLayout.filters.visibility = View.GONE
             }
     }
 
     private fun getExpensesByFilters() {
-        minAmount = binding.minTransactionInput.text.toString().ifEmpty {
+        minAmount = binding.filtersLayout.minTransactionInput.text.toString().ifEmpty {
             Double.MIN_VALUE.toString()
         }
-        maxAmount = binding.maxTransactionInput.text.toString().ifEmpty {
+        maxAmount = binding.filtersLayout.maxTransactionInput.text.toString().ifEmpty {
             Double.MAX_VALUE.toString()
         }
         getExpenses(FilterModel(bestMatchResult, minAmount, maxAmount, minDate, maxDate))
-        TransitionManager.beginDelayedTransition(binding.filterLayout, AutoTransition())
-        binding.arrowDirectionImage.setImageResource(R.drawable.ic_arrow_down)
-        binding.filterLayout.visibility = View.GONE
+        TransitionManager.beginDelayedTransition(binding.filtersLayout.filters, AutoTransition())
+        binding.filtersText.rightDrawable(R.drawable.ic_arrow_down)
+        binding.filtersLayout.filters.visibility = View.GONE
     }
 
     private fun initViews() {
-        binding.filtersTextLayout.setOnClickListener {
+        binding.filtersText.setOnClickListener {
             expandableFilterLayout()
         }
-        binding.filterButton.setOnClickListener {
+        binding.filtersLayout.filterButton.setOnClickListener {
             getExpensesByFilters()
         }
-        binding.transactionMinDateLayout.setOnClickListener {
+        binding.filtersLayout.transactionMinDateLayout.setOnClickListener {
             datePicker(0)
         }
-        binding.transactionMaxDateLayout.setOnClickListener {
+        binding.filtersLayout.transactionMaxDateLayout.setOnClickListener {
             datePicker(1)
         }
         binding.expensesSearchInput.addTextChangedListener { editable ->
@@ -117,30 +114,30 @@ class ExpensesFragment : Fragment() {
         val bestMatchFilterList = resources.getStringArray(R.array.bestMatchFilterList)
         val arrayAdapter =
             ArrayAdapter(requireContext(), R.layout.dropdown_item, bestMatchFilterList)
-        binding.bestMatchFilterList.setAdapter(arrayAdapter)
-        binding.bestMatchFilterList.onItemClickListener =
-            AdapterView.OnItemClickListener { parent, view, position, id ->
+        binding.filtersLayout.bestMatchFilterList.setAdapter(arrayAdapter)
+        binding.filtersLayout.bestMatchFilterList.onItemClickListener =
+            AdapterView.OnItemClickListener { _, _, position, _ ->
                 bestMatchResult = position.toString()
             }
     }
 
     private fun dateFilterControl() {
-        binding.selectedMinDateText.addTextChangedListener {
+        binding.filtersLayout.selectedMinDateText.addTextChangedListener {
             if (it.toString() != "Min Date") {
                 minDate = (it.toString().convertToTimestamp()).toString()
                 if (maxDate.isNotEmpty() && (minDate.toLong() >= maxDate.toLong())) {
                     context?.showToast("Minimum date must be less than the maximum date")
-                    binding.selectedMinDateText.text = "Min Date"
+                    binding.filtersLayout.selectedMinDateText.setText(R.string.min_date)
                 }
             }
         }
-        binding.selectedMaxDateText.addTextChangedListener {
+        binding.filtersLayout.selectedMaxDateText.addTextChangedListener {
             if (it.toString() != "Max Date") {
                 //86400000(1 gün) seçilen max date kapsaması için topluyorum
                 maxDate = (it.toString().convertToTimestamp() + 86400000).toString()
                 if (minDate.isNotEmpty() && (maxDate.toLong() <= minDate.toLong())) {
                     context?.showToast("Maximum date must be greater than the minimum date")
-                    binding.selectedMaxDateText.text = "Max Date"
+                    binding.filtersLayout.selectedMaxDateText.setText(R.string.max_date)
                 }
             }
         }
@@ -154,7 +151,7 @@ class ExpensesFragment : Fragment() {
                     binding.expensesProgressBar.setVisible(false)
                     binding.expensesAmountText.text = it.result.activeExpense
                     expensesList = it.result.expenses
-                    binding.transactionNotFoundLayout.setVisible(it.result.expenses.isEmpty())
+                    binding.transactionNotFoundText.setVisible(it.result.expenses.isEmpty())
                     loadTransactions(it.result.expenses)
                 }
                 is Resource.Loading -> {
@@ -191,9 +188,9 @@ class ExpensesFragment : Fragment() {
             if (resultKey == "REQUEST_KEY") {
                 val date = bundle.getString("SELECTED_DATE")
                 if (dateType == 0) {
-                    binding.selectedMinDateText.text = date
+                    binding.filtersLayout.selectedMinDateText.text = date
                 } else {
-                    binding.selectedMaxDateText.text = date
+                    binding.filtersLayout.selectedMaxDateText.text = date
                 }
             }
         }
