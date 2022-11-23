@@ -76,7 +76,7 @@
     <string name="clear">Clear</string>
     <string name="app_data">App data</string>
     <string name="clear_all_transaction">Clear All Transaction</string>
-    <string name="are_you_sure_do_you_wanna_clear_your_all_transactions">Are you sure do you wanna clear your all transactions?</string>
+    <string name="are_you_sure_do_you_wanna_clear_your_all_transactions">Are you sure do you want to clear your all transactions?</string>
     <string name="cancel">Cancel</string>
     <string name="all_time">All time</string>
     <string name="filters">Filters</string>
@@ -102,12 +102,12 @@
     <string name="attachment">Attachment</string>
     <string name="attachment_image">Attachment Image</string>
     <string name="edit">Edit</string>
-    <string name="are_you_sure_do_you_wanna_sign_out">Are you sure do you wanna sign out?</string>
+    <string name="are_you_sure_do_you_wanna_sign_out">Are you sure do you want to sign out?</string>
     <string name="delete_transaction">Delete Transaction</string>
-    <string name="are_you_sure_do_you_wanna_delete_transaction">Are you sure do you wanna delete transaction?</string>
+    <string name="are_you_sure_do_you_wanna_delete_transaction">Are you sure do you want to delete transaction?</string>
     <string name="delete">Delete</string>
     <string name="transaction_failed">Transaction failed</string>
-    <string name="transaction_has_been_succesfully">Transaction has been succesfully</string>
+    <string name="transaction_has_been_succesfully">Transaction has been successfully</string>
     <string name="taken_photo">Taken photo</string>
     <string name="accept_taken_photo">Accept taken photo</string>
     <string name="cancel_taken_photo">Cancel taken photo</string>
