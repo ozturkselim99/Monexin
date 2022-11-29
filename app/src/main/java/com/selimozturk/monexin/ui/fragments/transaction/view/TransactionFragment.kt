@@ -71,6 +71,22 @@ class TransactionFragment : Fragment() {
         return binding.root
     }
 
+    private fun requestCameraPermission() {
+        when {
+            ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.CAMERA
+            ) == PackageManager.PERMISSION_GRANTED -> {
+                findNavController().navigate(R.id.action_transactionFragment_to_cameraFragment)
+            }
+            ActivityCompat.shouldShowRequestPermissionRationale(
+                requireActivity(),
+                Manifest.permission.CAMERA
+            ) -> Log.i("monexin", "Show camera permissiom dialog")
+            else -> requestPermissionLauncher.launch(Manifest.permission.CAMERA)
+        }
+    }
+
     private fun requestGalleryPermission() {
         when {
             ContextCompat.checkSelfPermission(
@@ -118,7 +134,7 @@ class TransactionFragment : Fragment() {
             }
         }
         binding.transactionCameraButton.setOnClickListener {
-            findNavController().navigate(R.id.action_transactionFragment_to_cameraFragment)
+            requestCameraPermission()
         }
         binding.transactionImageButton.setOnClickListener {
             requestGalleryPermission()
@@ -160,10 +176,11 @@ class TransactionFragment : Fragment() {
     }
 
     private fun deleteTakenPhoto() {
-            args.transactionUpdate?.photoPath = ""
-            photoUri = null
-            binding.transactionAttachmentLayout.setVisible(true)
-            binding.takenPhotoLayout.visibility = View.GONE
+        photoUri?.toFile()?.delete()
+        args.transactionUpdate?.photoPath = ""
+        photoUri = null
+        binding.transactionAttachmentLayout.setVisible(true)
+        binding.takenPhotoLayout.visibility = View.GONE
     }
 
     private fun addTransaction() {

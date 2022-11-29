@@ -1,18 +1,14 @@
 package com.selimozturk.monexin.ui.fragments.camera
 
-import android.Manifest
 import android.content.ContentValues
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.net.toFile
 import androidx.fragment.app.Fragment
@@ -39,15 +35,6 @@ class CameraFragment : Fragment() {
     private lateinit var outputDirectory: File
     private lateinit var cameraExecutor: ExecutorService
     private lateinit var binding: FragmentCameraBinding
-    private val requestPermissionLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) { isGranted ->
-        if (isGranted) {
-            Log.i("monexin", "Permission granted")
-        } else {
-            Log.i("monexin", "Permission denied")
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,7 +43,7 @@ class CameraFragment : Fragment() {
         cameraExecutor = Executors.newSingleThreadExecutor()
         outputDirectory = getOutputDirectory()
         binding = FragmentCameraBinding.inflate(inflater, container, false)
-        requestCameraPermission()
+        startCamera()
         initViews()
         return binding.root
     }
@@ -64,22 +51,6 @@ class CameraFragment : Fragment() {
     private fun initViews() {
         binding.takePhotoButton.setOnClickListener {
             takePhoto()
-        }
-    }
-
-    private fun requestCameraPermission() {
-        when {
-            ContextCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.CAMERA
-            ) == PackageManager.PERMISSION_GRANTED -> {
-                startCamera()
-            }
-            ActivityCompat.shouldShowRequestPermissionRationale(
-                requireActivity(),
-                Manifest.permission.CAMERA
-            ) -> Log.i("monexin", "Show camera permissiom dialog")
-            else -> requestPermissionLauncher.launch(Manifest.permission.CAMERA)
         }
     }
 
