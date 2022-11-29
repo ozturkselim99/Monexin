@@ -25,6 +25,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.selimozturk.monexin.R
 import com.selimozturk.monexin.databinding.FragmentTransactionBinding
 import com.selimozturk.monexin.model.Transactions
@@ -96,6 +97,7 @@ class TransactionFragment : Fragment() {
                 photoUri = uri
                 Glide.with(requireContext())
                     .load(uri)
+                    .diskCacheStrategy(DiskCacheStrategy.DATA)
                     .into(binding.takenPhoto)
             }
     }
