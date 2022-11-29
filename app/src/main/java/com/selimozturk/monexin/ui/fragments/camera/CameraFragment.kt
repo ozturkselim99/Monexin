@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.selimozturk.monexin.R
 import com.selimozturk.monexin.databinding.FragmentCameraBinding
 import com.selimozturk.monexin.utils.setVisible
@@ -87,7 +88,7 @@ class CameraFragment : Fragment() {
         cameraProviderFuture.addListener({
             val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
             preview = Preview.Builder().build()
-            imageCapture = ImageCapture.Builder().build()
+            imageCapture = ImageCapture.Builder().setJpegQuality(15).build()
             val cameraSelector =
                 CameraSelector.Builder().requireLensFacing(CameraSelector.LENS_FACING_BACK).build()
             try {
@@ -135,6 +136,7 @@ class CameraFragment : Fragment() {
             binding.takenPhotoConfirmLayout.setVisible(true)
             Glide.with(requireContext())
                 .load(uri)
+                .diskCacheStrategy(DiskCacheStrategy.DATA)
                 .into(binding.takenPhoto)
             binding.acceptTakenPhoto.setOnClickListener {
                 acceptTakenPhoto(uri)
