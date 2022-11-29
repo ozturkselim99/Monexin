@@ -11,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.futured.donut.DonutSection
+import com.google.android.material.appbar.AppBarLayout
 import com.selimozturk.monexin.R
 import com.selimozturk.monexin.adapter.TransactionAdapter
 import com.selimozturk.monexin.databinding.FragmentHomeBinding
@@ -28,10 +29,17 @@ import dagger.hilt.android.AndroidEntryPoint
 class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
-    private var minDate: String= "0"
-    private var maxDate: String=System.currentTimeMillis().toString()
+    private var minDate: String = "0"
+    private var maxDate: String = System.currentTimeMillis().toString()
     private val homeViewModel by viewModels<HomeViewModel>()
     private val adapter = TransactionAdapter()
+    private val offsetChangedListener = object : AppBarLayout.OnOffsetChangedListener {
+        override fun onOffsetChanged(appBarLayout: AppBarLayout?, verticalOffset: Int) {
+            val toEnable = verticalOffset == 0
+            if (!binding.homeSwipeRefreshLayout.isEnabled.xor(toEnable)) return
+            binding.homeSwipeRefreshLayout.isEnabled = toEnable
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,6 +53,11 @@ class HomeFragment : Fragment() {
         initViews()
         dateRangeFilterControl()
         return binding.root
+    }
+
+    override fun onPause() {
+        super.onPause()
+        binding.appBarLayout.removeOnOffsetChangedListener(offsetChangedListener)
     }
 
     private fun dateRangeFilterClear() {
@@ -114,6 +127,11 @@ class HomeFragment : Fragment() {
     }
 
     private fun initViews() {
+        binding.appBarLayout.addOnOffsetChangedListener(offsetChangedListener)
+        binding.homeSwipeRefreshLayout.setOnRefreshListener {
+            getHomeInfo(minDate, maxDate)
+            binding.homeSwipeRefreshLayout.isRefreshing = false
+        }
         binding.transactionMinDateLayout.setOnClickListener {
             datePicker(0)
         }
