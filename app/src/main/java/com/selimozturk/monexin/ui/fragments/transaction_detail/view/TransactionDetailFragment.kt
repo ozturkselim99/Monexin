@@ -11,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.selimozturk.monexin.R
 import com.selimozturk.monexin.databinding.FragmentTransactionDetailBinding
 import com.selimozturk.monexin.databinding.TransactionDeleteDialogBinding
@@ -78,6 +79,7 @@ class TransactionDetailFragment : Fragment() {
                     is Resource.Success -> {
                         Glide.with(requireContext())
                             .load(it.result)
+                            .diskCacheStrategy(DiskCacheStrategy.DATA)
                             .into(binding.transactionImage)
                     }
                     is Resource.Loading -> {
@@ -103,11 +105,7 @@ class TransactionDetailFragment : Fragment() {
                 builder.dismiss()
             }
             dialogBinding.deleteTransactionDeleteButton.setOnClickListener {
-                if (args.transaction.type == "Expense") {
-                    transactionViewModel.deleteTransaction("expenses", args.transaction.id)
-                } else {
-                    transactionViewModel.deleteTransaction("incomes", args.transaction.id)
-                }
+                transactionViewModel.deleteTransaction(args.transaction)
                 context?.showToast("Transaction Deleted")
                 findNavController().popBackStack()
                 builder.dismiss()

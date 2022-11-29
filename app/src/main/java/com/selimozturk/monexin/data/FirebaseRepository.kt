@@ -11,7 +11,7 @@ interface FirebaseRepository {
     suspend fun getExpenses(filterModel: FilterModel?): Resource<ExpensesInfo>
     suspend fun getIncomes(filterModel: FilterModel?): Resource<IncomesInfo>
     suspend fun clearAllTransaction()
-    suspend fun deleteTransaction(collectionPath: String, id: String)
+    suspend fun deleteTransaction(transaction:Transactions)
     suspend fun updateTransaction(transaction: Transactions, photoUri: Uri?): Resource<String>
     suspend fun downloadTransactionImage(url: String?): Resource<Uri>
 }

@@ -272,10 +272,18 @@ class FirebaseRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun deleteTransaction(collectionPath: String, id: String) {
+    override suspend fun deleteTransaction(transaction: Transactions) {
         try {
-            firebaseFirestore.collection("users").document(firebaseAuth.currentUser?.uid!!)
-                .collection(collectionPath).document(id).delete().await()
+            if(transaction.photoPath!="") {
+                firebaseStorage.reference.child(transaction.photoPath).delete()
+            }
+            if (transaction.type == "Expense") {
+                firebaseFirestore.collection("users").document(firebaseAuth.currentUser?.uid!!)
+                    .collection("expenses").document(transaction.id).delete().await()
+            } else {
+                firebaseFirestore.collection("users").document(firebaseAuth.currentUser?.uid!!)
+                    .collection("incomes").document(transaction.id).delete().await()
+            }
         } catch (e: Exception) {
             e.printStackTrace()
         }

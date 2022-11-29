@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.selimozturk.monexin.data.FirebaseRepository
+import com.selimozturk.monexin.model.Transactions
 import com.selimozturk.monexin.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -19,8 +20,8 @@ class TransactionDetailViewModel @Inject constructor(
     private val _transactionImageState = MutableLiveData<Resource<Uri>>(null)
     val transactionImageState: LiveData<Resource<Uri>?> = _transactionImageState
 
-    fun deleteTransaction(collectionPath:String,id:String) = viewModelScope.launch {
-        repository.deleteTransaction(collectionPath,id)
+    fun deleteTransaction(transaction: Transactions) = viewModelScope.launch {
+        repository.deleteTransaction(transaction)
     }
 
     fun downloadTransactionImage(url:String?)=viewModelScope.launch {
