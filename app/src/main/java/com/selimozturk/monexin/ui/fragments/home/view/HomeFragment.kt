@@ -18,10 +18,7 @@ import com.selimozturk.monexin.databinding.FragmentHomeBinding
 import com.selimozturk.monexin.model.Transactions
 import com.selimozturk.monexin.ui.fragments.date_picker.DatePickerFragment
 import com.selimozturk.monexin.ui.fragments.home.viewmodel.HomeViewModel
-import com.selimozturk.monexin.utils.Resource
-import com.selimozturk.monexin.utils.convertToTimestamp
-import com.selimozturk.monexin.utils.setVisible
-import com.selimozturk.monexin.utils.showToast
+import com.selimozturk.monexin.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -133,10 +130,10 @@ class HomeFragment : Fragment() {
             binding.homeSwipeRefreshLayout.isRefreshing = false
         }
         binding.transactionMinDateLayout.setOnClickListener {
-            datePicker(0)
+            datePicker(DateType.MIN_DATE)
         }
         binding.transactionMaxDateLayout.setOnClickListener {
-            datePicker(1)
+            datePicker(DateType.MAX_DATE)
         }
         binding.addTransactionButton.setOnClickListener {
             val direction = HomeFragmentDirections.actionHomeFragmentToTransactionFragment(null)
@@ -174,7 +171,7 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun datePicker(dateType: Int) {
+    private fun datePicker(dateType: DateType) {
         val datePickerFragment = DatePickerFragment()
         val supportFragmentManager = requireActivity().supportFragmentManager
         supportFragmentManager.setFragmentResultListener(
@@ -183,7 +180,7 @@ class HomeFragment : Fragment() {
         ) { resultKey, bundle ->
             if (resultKey == "REQUEST_KEY") {
                 val date = bundle.getString("SELECTED_DATE")
-                if (dateType == 0) {
+                if (dateType == DateType.MIN_DATE) {
                     binding.selectedMinDateText.text = date
                 } else {
                     binding.selectedMaxDateText.text = date

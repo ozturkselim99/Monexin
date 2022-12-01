@@ -32,7 +32,7 @@ class IncomesFragment : Fragment() {
     private var incomesList: List<Transactions> = listOf()
     private var minDate: String = "0"
     private var maxDate: String = System.currentTimeMillis().toString()
-    private var bestMatchResult: String = "0"
+    private var bestMatchResult: BestMatchResult = BestMatchResult.DESCENDING_BY_DATE
     private var minAmount: String = Double.MIN_VALUE.toString()
     private var maxAmount: String = Double.MAX_VALUE.toString()
 
@@ -103,10 +103,10 @@ class IncomesFragment : Fragment() {
             getIncomesByFilters()
         }
         binding.filtersLayout.transactionMinDateLayout.setOnClickListener {
-            datePicker(0)
+            datePicker(DateType.MIN_DATE)
         }
         binding.filtersLayout.transactionMaxDateLayout.setOnClickListener {
-            datePicker(1)
+            datePicker(DateType.MAX_DATE)
         }
         binding.incomesSearchInput.addTextChangedListener { editable ->
             searchFilter(editable.toString())
@@ -120,7 +120,7 @@ class IncomesFragment : Fragment() {
         binding.filtersLayout.bestMatchFilterList.setAdapter(arrayAdapter)
         binding.filtersLayout.bestMatchFilterList.onItemClickListener =
             AdapterView.OnItemClickListener { _, _, position, _ ->
-                bestMatchResult = position.toString()
+                bestMatchResult = BestMatchResult.values()[position]
             }
     }
 
@@ -181,7 +181,7 @@ class IncomesFragment : Fragment() {
         }
     }
 
-    private fun datePicker(dateType: Int) {
+    private fun datePicker(dateType: DateType) {
         val datePickerFragment = DatePickerFragment()
         val supportFragmentManager = requireActivity().supportFragmentManager
         supportFragmentManager.setFragmentResultListener(
@@ -190,7 +190,7 @@ class IncomesFragment : Fragment() {
         ) { resultKey, bundle ->
             if (resultKey == "REQUEST_KEY") {
                 val date = bundle.getString("SELECTED_DATE")
-                if (dateType == 0) {
+                if (dateType == DateType.MIN_DATE) {
                     binding.filtersLayout.selectedMinDateText.text = date
                 } else {
                     binding.filtersLayout.selectedMaxDateText.text = date

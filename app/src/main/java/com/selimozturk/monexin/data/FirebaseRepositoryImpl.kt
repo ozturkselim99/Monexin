@@ -6,6 +6,7 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.selimozturk.monexin.model.*
+import com.selimozturk.monexin.utils.BestMatchResult
 import com.selimozturk.monexin.utils.Resource
 import com.selimozturk.monexin.utils.await
 import javax.inject.Inject
@@ -155,7 +156,7 @@ class FirebaseRepositoryImpl @Inject constructor(
             activeExpense = expenses.toObjects(Transactions::class.java).sumOf { it.amount }
             if (filterModel != null) {
                 when (filterModel.bestMatchResult) {
-                    "0" -> {
+                    BestMatchResult.DESCENDING_BY_DATE -> {
                         expensesList = expenses.toObjects(Transactions::class.java)
                             .sortedByDescending { it.createdAt }
                             .filter { transactions -> transactions.createdAt >= filterModel.minDate && transactions.createdAt <= filterModel.maxDate && transactions.amount >= filterModel.minAmount.toDouble() && transactions.amount <= filterModel.maxAmount.toDouble() }
@@ -163,7 +164,7 @@ class FirebaseRepositoryImpl @Inject constructor(
                             .filter { transactions -> transactions.createdAt >= filterModel.minDate && transactions.createdAt <= filterModel.maxDate && transactions.amount >= filterModel.minAmount.toDouble() && transactions.amount <= filterModel.maxAmount.toDouble() }
                             .sumOf { it.amount }
                     }
-                    "1" -> {
+                    BestMatchResult.ASCENDING_BY_DATE -> {
                         expensesList = expenses.toObjects(Transactions::class.java)
                             .sortedBy { it.createdAt }
                             .filter { transactions -> transactions.createdAt >= filterModel.minDate && transactions.createdAt <= filterModel.maxDate && transactions.amount >= filterModel.minAmount.toDouble() && transactions.amount <= filterModel.maxAmount.toDouble() }
@@ -171,7 +172,7 @@ class FirebaseRepositoryImpl @Inject constructor(
                             .filter { transactions -> transactions.createdAt >= filterModel.minDate && transactions.createdAt <= filterModel.maxDate && transactions.amount >= filterModel.minAmount.toDouble() && transactions.amount <= filterModel.maxAmount.toDouble() }
                             .sumOf { it.amount }
                     }
-                    "2" -> {
+                    BestMatchResult.DECREASING_BY_AMOUNT -> {
                         expensesList = expenses.toObjects(Transactions::class.java)
                             .sortedByDescending { it.amount }
                             .filter { transactions -> transactions.createdAt >= filterModel.minDate && transactions.createdAt <= filterModel.maxDate && transactions.amount >= filterModel.minAmount.toDouble() && transactions.amount <= filterModel.maxAmount.toDouble() }
@@ -179,7 +180,7 @@ class FirebaseRepositoryImpl @Inject constructor(
                             .filter { transactions -> transactions.createdAt >= filterModel.minDate && transactions.createdAt <= filterModel.maxDate && transactions.amount >= filterModel.minAmount.toDouble() && transactions.amount <= filterModel.maxAmount.toDouble() }
                             .sumOf { it.amount }
                     }
-                    "3" -> {
+                    BestMatchResult.INCREASING_BY_AMOUNT -> {
                         expensesList = expenses.toObjects(Transactions::class.java)
                             .sortedBy { it.amount }
                             .filter { transactions -> transactions.createdAt >= filterModel.minDate && transactions.createdAt <= filterModel.maxDate && transactions.amount >= filterModel.minAmount.toDouble() && transactions.amount <= filterModel.maxAmount.toDouble() }
@@ -187,7 +188,6 @@ class FirebaseRepositoryImpl @Inject constructor(
                             .filter { transactions -> transactions.createdAt >= filterModel.minDate && transactions.createdAt <= filterModel.maxDate && transactions.amount >= filterModel.minAmount.toDouble() && transactions.amount <= filterModel.maxAmount.toDouble() }
                             .sumOf { it.amount }
                     }
-                    else -> throw IllegalStateException("Best Match Result")
                 }
             } else {
                 expensesList =
@@ -211,7 +211,7 @@ class FirebaseRepositoryImpl @Inject constructor(
             activeIncome = incomes.toObjects(Transactions::class.java).sumOf { it.amount }
             if (filterModel != null) {
                 when (filterModel.bestMatchResult) {
-                    "0" -> {
+                    BestMatchResult.DESCENDING_BY_DATE -> {
                         incomesList = incomes.toObjects(Transactions::class.java)
                             .sortedByDescending { it.createdAt }
                             .filter { transactions -> transactions.createdAt >= filterModel.minDate && transactions.createdAt <= filterModel.maxDate && transactions.amount >= filterModel.minAmount.toDouble() && transactions.amount <= filterModel.maxAmount.toDouble() }
@@ -219,7 +219,7 @@ class FirebaseRepositoryImpl @Inject constructor(
                             .filter { transactions -> transactions.createdAt >= filterModel.minDate && transactions.createdAt <= filterModel.maxDate && transactions.amount >= filterModel.minAmount.toDouble() && transactions.amount <= filterModel.maxAmount.toDouble() }
                             .sumOf { it.amount }
                     }
-                    "1" -> {
+                    BestMatchResult.ASCENDING_BY_DATE -> {
                         incomesList = incomes.toObjects(Transactions::class.java)
                             .sortedBy { it.createdAt }
                             .filter { transactions -> transactions.createdAt >= filterModel.minDate && transactions.createdAt <= filterModel.maxDate && transactions.amount >= filterModel.minAmount.toDouble() && transactions.amount <= filterModel.maxAmount.toDouble() }
@@ -227,7 +227,7 @@ class FirebaseRepositoryImpl @Inject constructor(
                             .filter { transactions -> transactions.createdAt >= filterModel.minDate && transactions.createdAt <= filterModel.maxDate && transactions.amount >= filterModel.minAmount.toDouble() && transactions.amount <= filterModel.maxAmount.toDouble() }
                             .sumOf { it.amount }
                     }
-                    "2" -> {
+                    BestMatchResult.DECREASING_BY_AMOUNT -> {
                         incomesList = incomes.toObjects(Transactions::class.java)
                             .sortedByDescending { it.amount }
                             .filter { transactions -> transactions.createdAt >= filterModel.minDate && transactions.createdAt <= filterModel.maxDate && transactions.amount >= filterModel.minAmount.toDouble() && transactions.amount <= filterModel.maxAmount.toDouble() }
@@ -235,7 +235,7 @@ class FirebaseRepositoryImpl @Inject constructor(
                             .filter { transactions -> transactions.createdAt >= filterModel.minDate && transactions.createdAt <= filterModel.maxDate && transactions.amount >= filterModel.minAmount.toDouble() && transactions.amount <= filterModel.maxAmount.toDouble() }
                             .sumOf { it.amount }
                     }
-                    "3" -> {
+                    BestMatchResult.INCREASING_BY_AMOUNT -> {
                         incomesList = incomes.toObjects(Transactions::class.java)
                             .sortedBy { it.amount }
                             .filter { transactions -> transactions.createdAt >= filterModel.minDate && transactions.createdAt <= filterModel.maxDate && transactions.amount >= filterModel.minAmount.toDouble() && transactions.amount <= filterModel.maxAmount.toDouble() }
@@ -243,7 +243,6 @@ class FirebaseRepositoryImpl @Inject constructor(
                             .filter { transactions -> transactions.createdAt >= filterModel.minDate && transactions.createdAt <= filterModel.maxDate && transactions.amount >= filterModel.minAmount.toDouble() && transactions.amount <= filterModel.maxAmount.toDouble() }
                             .sumOf { it.amount }
                     }
-                    else -> throw IllegalStateException("Best Match Result")
                 }
             } else {
                 incomesList =

@@ -32,7 +32,7 @@ class ExpensesFragment : Fragment() {
     private var expensesList: List<Transactions> = listOf()
     private var minDate: String = "0"
     private var maxDate: String = System.currentTimeMillis().toString()
-    private var bestMatchResult: String = "0"
+    private var bestMatchResult: BestMatchResult = BestMatchResult.DESCENDING_BY_DATE
     private var minAmount: String = Double.MIN_VALUE.toString()
     private var maxAmount: String = Double.MAX_VALUE.toString()
 
@@ -100,10 +100,10 @@ class ExpensesFragment : Fragment() {
             getExpensesByFilters()
         }
         binding.filtersLayout.transactionMinDateLayout.setOnClickListener {
-            datePicker(0)
+            datePicker(DateType.MIN_DATE)
         }
         binding.filtersLayout.transactionMaxDateLayout.setOnClickListener {
-            datePicker(1)
+            datePicker(DateType.MAX_DATE)
         }
         binding.expensesSearchInput.addTextChangedListener { editable ->
             searchFilter(editable.toString())
@@ -111,13 +111,12 @@ class ExpensesFragment : Fragment() {
     }
 
     private fun initBestMatchFilterList() {
-        val bestMatchFilterList = resources.getStringArray(R.array.bestMatchFilterList)
         val arrayAdapter =
-            ArrayAdapter(requireContext(), R.layout.dropdown_item, bestMatchFilterList)
+            ArrayAdapter(requireContext(), R.layout.dropdown_item, BestMatchResult.values())
         binding.filtersLayout.bestMatchFilterList.setAdapter(arrayAdapter)
         binding.filtersLayout.bestMatchFilterList.onItemClickListener =
             AdapterView.OnItemClickListener { _, _, position, _ ->
-                bestMatchResult = position.toString()
+                bestMatchResult = BestMatchResult.values()[position]
             }
     }
 
@@ -178,7 +177,7 @@ class ExpensesFragment : Fragment() {
         }
     }
 
-    private fun datePicker(dateType: Int) {
+    private fun datePicker(dateType: DateType) {
         val datePickerFragment = DatePickerFragment()
         val supportFragmentManager = requireActivity().supportFragmentManager
         supportFragmentManager.setFragmentResultListener(
@@ -187,7 +186,7 @@ class ExpensesFragment : Fragment() {
         ) { resultKey, bundle ->
             if (resultKey == "REQUEST_KEY") {
                 val date = bundle.getString("SELECTED_DATE")
-                if (dateType == 0) {
+                if (dateType == DateType.MIN_DATE) {
                     binding.filtersLayout.selectedMinDateText.text = date
                 } else {
                     binding.filtersLayout.selectedMaxDateText.text = date
