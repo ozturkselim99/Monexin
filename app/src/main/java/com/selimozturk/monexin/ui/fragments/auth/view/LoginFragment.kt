@@ -36,39 +36,39 @@ class LoginFragment : Fragment() {
         return binding.root
     }
 
-    private fun initViews() {
-        binding.registerButton.setOnClickListener {
+    private fun initViews() = with(binding) {
+        registerButton.setOnClickListener {
             findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
         }
-        binding.loginButton.setOnClickListener {
+        loginButton.setOnClickListener {
             login()
         }
     }
 
-    private fun login() {
-            authViewModel.login(
-                binding.emailInput.text.toString(),
-                binding.passwordInput.text.toString()
-            )
-            authViewModel.loginState.observe(viewLifecycleOwner) {
-                when (it) {
-                    is Resource.Success -> {
-                        context?.showToast("Welcome")
-                        binding.loginProgressBar.setVisible(false)
-                        sessionManager.setLogin(true)
-                        val intent = Intent(requireContext(), MainActivity::class.java)
-                        startActivity(intent)
-                        activity?.finish()
-                    }
-                    is Resource.Loading -> {
-                        binding.loginProgressBar.setVisible(true)
-                    }
-                    is Resource.Failure -> {
-                        context?.showToast(it.exception.message.toString())
-                        binding.loginProgressBar.setVisible(false)
-                    }
+    private fun login() = with(binding) {
+        authViewModel.login(
+            emailInput.text.toString(),
+            passwordInput.text.toString()
+        )
+        authViewModel.loginState.observe(viewLifecycleOwner) {
+            when (it) {
+                is Resource.Success -> {
+                    context?.showToast("Welcome")
+                    loginProgressBar.setVisible(false)
+                    sessionManager.setLogin(true)
+                    val intent = Intent(requireContext(), MainActivity::class.java)
+                    startActivity(intent)
+                    activity?.finish()
+                }
+                is Resource.Loading -> {
+                    loginProgressBar.setVisible(true)
+                }
+                is Resource.Failure -> {
+                    context?.showToast(it.exception.message.toString())
+                    loginProgressBar.setVisible(false)
                 }
             }
+        }
     }
 
 }

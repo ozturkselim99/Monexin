@@ -40,33 +40,33 @@ class ProfileFragment : Fragment() {
         return binding.root
     }
 
-    private fun initViews() {
-        binding.profileClearAppDataButton.setOnClickListener {
+    private fun initViews() = with(binding) {
+        profileClearAppDataButton.setOnClickListener {
             clearAppData()
         }
-        binding.signOutButton.setOnClickListener {
+        signOutButton.setOnClickListener {
             signOut()
         }
     }
 
-    private fun getProfileInfo() {
+    private fun getProfileInfo() = with(binding) {
         profileViewModel.getProfileInfo()
         profileViewModel.profileState.observe(viewLifecycleOwner) {
             when (it) {
                 is Resource.Success -> {
-                    binding.profileProgressBar.setVisible(false)
-                    binding.profileAccountNumberText.text = it.result.accountNumber
-                    binding.profileNameText.text = it.result.name
-                    binding.profileEmailText.text = it.result.email
-                    binding.profileDeviceText.text = it.result.deviceName
-                    binding.profileJoinedDateText.text = it.result.joinedData
+                    profileProgressBar.setVisible(false)
+                    profileAccountNumberText.text = it.result.accountNumber
+                    profileNameText.text = it.result.name
+                    profileEmailText.text = it.result.email
+                    profileDeviceText.text = it.result.deviceName
+                    profileJoinedDateText.text = it.result.joinedData
                 }
                 is Resource.Loading -> {
-                    binding.profileProgressBar.setVisible(true)
+                    profileProgressBar.setVisible(true)
                 }
                 is Resource.Failure -> {
                     context?.showToast(it.exception.message.toString())
-                    binding.profileProgressBar.setVisible(false)
+                    profileProgressBar.setVisible(false)
                 }
             }
         }

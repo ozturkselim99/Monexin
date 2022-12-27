@@ -48,8 +48,8 @@ class CameraFragment : Fragment() {
         return binding.root
     }
 
-    private fun initViews() {
-        binding.takePhotoButton.setOnClickListener {
+    private fun initViews() = with(binding) {
+        takePhotoButton.setOnClickListener {
             takePhoto()
         }
     }
@@ -99,36 +99,36 @@ class CameraFragment : Fragment() {
             })
     }
 
-    private fun takenPhoto(uri: Uri) {
+    private fun takenPhoto(uri: Uri) = with(binding) {
         lifecycleScope.launch(Dispatchers.Main) {
-            binding.viewFinder.setVisible(false)
-            binding.takePhotoButton.setVisible(false)
-            binding.takenPhoto.setVisible(true)
-            binding.takenPhotoConfirmLayout.setVisible(true)
+            viewFinder.setVisible(false)
+            takePhotoButton.setVisible(false)
+            takenPhoto.setVisible(true)
+            takenPhotoConfirmLayout.setVisible(true)
             Glide.with(requireContext())
                 .load(uri)
                 .diskCacheStrategy(DiskCacheStrategy.DATA)
-                .into(binding.takenPhoto)
-            binding.acceptTakenPhoto.setOnClickListener {
+                .into(takenPhoto)
+            acceptTakenPhoto.setOnClickListener {
                 acceptTakenPhoto(uri)
             }
-            binding.cancelTakenPhoto.setOnClickListener {
+            cancelTakenPhoto.setOnClickListener {
                 cancelTakenPhoto(uri)
             }
         }
     }
 
     private fun acceptTakenPhoto(uri: Uri) {
-            findNavController().previousBackStackEntry?.savedStateHandle?.set("Uri", uri)
-            findNavController().popBackStack()
+        findNavController().previousBackStackEntry?.savedStateHandle?.set("Uri", uri)
+        findNavController().popBackStack()
     }
 
-    private fun cancelTakenPhoto(uri: Uri) {
-            uri.toFile().delete()
-            binding.viewFinder.setVisible(true)
-            binding.takePhotoButton.setVisible(true)
-            binding.takenPhoto.setVisible(false)
-            binding.takenPhotoConfirmLayout.setVisible(false)
+    private fun cancelTakenPhoto(uri: Uri) = with(binding) {
+        uri.toFile().delete()
+        viewFinder.setVisible(true)
+        takePhotoButton.setVisible(true)
+        takenPhoto.setVisible(false)
+        takenPhotoConfirmLayout.setVisible(false)
     }
 
     private fun getOutputDirectory(): File {

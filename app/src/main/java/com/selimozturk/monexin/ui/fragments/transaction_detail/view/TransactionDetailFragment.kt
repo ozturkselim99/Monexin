@@ -40,38 +40,38 @@ class TransactionDetailFragment : Fragment() {
         return binding.root
     }
 
-    private fun initViews() {
-        binding.transactionEditButton.setOnClickListener {
+    private fun initViews() = with(binding) {
+        transactionEditButton.setOnClickListener {
             updateTransaction()
         }
-        binding.transactionDetailDeleteButton.setOnClickListener {
+        transactionDetailDeleteButton.setOnClickListener {
             deleteTransaction()
         }
-        binding.transactionDetailBackButton.setOnClickListener {
+        transactionDetailBackButton.setOnClickListener {
             findNavController().popBackStack()
         }
     }
 
-    private fun getTransactionDetail() {
+    private fun getTransactionDetail() = with(binding) {
         if (args.transaction.type == "Expense") {
-            binding.transactionDetailInfo.setBackgroundColor(
+            transactionDetailInfo.setBackgroundColor(
                 ContextCompat.getColor(
                     requireContext(),
                     R.color.accent_4
                 )
             )
         } else {
-            binding.transactionDetailInfo.setBackgroundColor(
+            transactionDetailInfo.setBackgroundColor(
                 ContextCompat.getColor(
                     requireContext(),
                     R.color.accent_3
                 )
             )
         }
-        binding.transactionDetailAmount.text = args.transaction.amount.toString()
-        binding.transactionDetailTitle.text = args.transaction.title
-        binding.transactionDetailCratedAt.text = args.transaction.createdAt.convertToLongTime()
-        binding.transactionDetailDescription.text = args.transaction.description
+        transactionDetailAmount.text = args.transaction.amount.toString()
+        transactionDetailTitle.text = args.transaction.title
+        transactionDetailCratedAt.text = args.transaction.createdAt.convertToLongTime()
+        transactionDetailDescription.text = args.transaction.description
         if (args.transaction.photoPath != "") {
             transactionViewModel.downloadTransactionImage(args.transaction.photoPath)
             transactionViewModel.transactionImageState.observe(viewLifecycleOwner) {
@@ -80,20 +80,20 @@ class TransactionDetailFragment : Fragment() {
                         Glide.with(requireContext())
                             .load(it.result)
                             .diskCacheStrategy(DiskCacheStrategy.DATA)
-                            .into(binding.transactionImage)
+                            .into(transactionImage)
                     }
                     is Resource.Loading -> {
-                        binding.transactionImageProgressBar.setVisible(true)
+                        transactionImageProgressBar.setVisible(true)
                     }
                     is Resource.Failure -> {
                         context?.showToast(it.exception.message.toString())
-                        binding.transactionImageProgressBar.setVisible(false)
+                        transactionImageProgressBar.setVisible(false)
                     }
                 }
             }
         } else {
-            binding.transactionImage.setVisible(false)
-            binding.transactionImageNotFoundText.setVisible(true)
+            transactionImage.setVisible(false)
+            transactionImageNotFoundText.setVisible(true)
         }
     }
 

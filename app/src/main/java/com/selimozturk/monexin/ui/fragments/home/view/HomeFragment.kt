@@ -52,29 +52,29 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
-    override fun onPause() {
+    override fun onPause() = with(binding) {
         super.onPause()
-        binding.appBarLayout.removeOnOffsetChangedListener(offsetChangedListener)
+        appBarLayout.removeOnOffsetChangedListener(offsetChangedListener)
     }
 
-    private fun dateRangeFilterClear() {
-        binding.selectedMaxDateText.setText(R.string.max_date)
-        binding.selectedMinDateText.setText(R.string.min_date)
+    private fun dateRangeFilterClear() = with(binding) {
+        selectedMaxDateText.setText(R.string.max_date)
+        selectedMinDateText.setText(R.string.min_date)
         minDate = "0"
         maxDate = System.currentTimeMillis().toString()
         getHomeInfo(minDate, maxDate)
-        binding.dateRangeClearButton.setVisible(false)
+        dateRangeClearButton.setVisible(false)
     }
 
-    private fun dateRangeFilterControl() {
-        binding.selectedMinDateText.addTextChangedListener {
+    private fun dateRangeFilterControl() = with(binding) {
+        selectedMinDateText.addTextChangedListener {
             if (it.toString() != "Min Date") {
                 minDate = (it.toString().convertToTimestamp()).toString()
                 if (maxDate.isNotEmpty() && (minDate.toLong() >= maxDate.toLong())) {
                     context?.showToast("Minimum date must be less than the maximum date")
-                    binding.selectedMinDateText.setText(R.string.min_date)
+                    selectedMinDateText.setText(R.string.min_date)
                 } else {
-                    binding.dateRangeClearButton.setVisible(true)
+                    dateRangeClearButton.setVisible(true)
                     getHomeInfo(minDate, maxDate)
                 }
             }
@@ -85,7 +85,7 @@ class HomeFragment : Fragment() {
                 maxDate = (it.toString().convertToTimestamp() + 86400000).toString()
                 if (minDate.isNotEmpty() && (maxDate.toLong() <= minDate.toLong())) {
                     context?.showToast("Maximum date must be greater than the minimum date")
-                    binding.selectedMaxDateText.setText(R.string.max_date)
+                    selectedMaxDateText.setText(R.string.max_date)
                 } else {
                     getHomeInfo(minDate, maxDate)
                 }
@@ -93,7 +93,7 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun createDonutView(activeExpense: Float, activeIncome: Float) {
+    private fun createDonutView(activeExpense: Float, activeIncome: Float) = with(binding) {
         val section1 = DonutSection(
             name = "expense",
             color = Color.parseColor("#FB1D32"),
@@ -105,17 +105,17 @@ class HomeFragment : Fragment() {
             color = Color.parseColor("#FFB98E"),
             amount = activeIncome,
         )
-        binding.donutView.submitData(listOf(section1, section2))
+        donutView.submitData(listOf(section1, section2))
     }
 
-    private fun setupRecyclerview() {
+    private fun setupRecyclerview() = with(binding) {
         val layoutManager = LinearLayoutManager(requireContext())
-        binding.transactionsRW.layoutManager = layoutManager
+        transactionsRW.layoutManager = layoutManager
     }
 
-    private fun loadTransactions(transactions: List<Transactions>) {
-        adapter.items=transactions
-        binding.transactionsRW.adapter = adapter
+    private fun loadTransactions(transactions: List<Transactions>) = with(binding) {
+        adapter.items = transactions
+        transactionsRW.adapter = adapter
         adapter.onItemClicked = { transaction ->
             val direction =
                 HomeFragmentDirections.actionHomeFragmentToTransactionDetail(transaction)
@@ -123,55 +123,55 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun initViews() {
-        binding.appBarLayout.addOnOffsetChangedListener(offsetChangedListener)
-        binding.homeSwipeRefreshLayout.setOnRefreshListener {
+    private fun initViews() = with(binding) {
+        appBarLayout.addOnOffsetChangedListener(offsetChangedListener)
+        homeSwipeRefreshLayout.setOnRefreshListener {
             getHomeInfo(minDate, maxDate)
-            binding.homeSwipeRefreshLayout.isRefreshing = false
+            homeSwipeRefreshLayout.isRefreshing = false
         }
-        binding.transactionMinDateLayout.setOnClickListener {
+        transactionMinDateLayout.setOnClickListener {
             datePicker(DateType.MIN_DATE)
         }
-        binding.transactionMaxDateLayout.setOnClickListener {
+        transactionMaxDateLayout.setOnClickListener {
             datePicker(DateType.MAX_DATE)
         }
-        binding.addTransactionButton.setOnClickListener {
+        addTransactionButton.setOnClickListener {
             val direction = HomeFragmentDirections.actionHomeFragmentToTransactionFragment(null)
             findNavController().navigate(direction)
         }
-        binding.dateRangeClearButton.setOnClickListener {
+        dateRangeClearButton.setOnClickListener {
             dateRangeFilterClear()
         }
     }
 
-    private fun getHomeInfo(minDate: String?, maxDate: String?) {
+    private fun getHomeInfo(minDate: String?, maxDate: String?) = with(binding) {
         homeViewModel.getHomeInfo(minDate, maxDate)
         homeViewModel.homeInfoState.observe(viewLifecycleOwner) {
             when (it) {
                 is Resource.Success -> {
-                    binding.homeInfoProgressBar.setVisible(false)
-                    binding.expenseAmountText.text = it.result.activeExpense
-                    binding.incomesAmountText.text = it.result.activeIncome
-                    binding.userDisplayNameText.text = "Hello, " + it.result.displayName
+                    homeInfoProgressBar.setVisible(false)
+                    expenseAmountText.text = it.result.activeExpense
+                    incomesAmountText.text = it.result.activeIncome
+                    userDisplayNameText.text = "Hello, " + it.result.displayName
                     createDonutView(
                         it.result.activeExpense.toFloat(),
                         it.result.activeIncome.toFloat()
                     )
-                    binding.transactionNotFoundText.setVisible(it.result.recentlyAdded.isEmpty())
+                    transactionNotFoundText.setVisible(it.result.recentlyAdded.isEmpty())
                     loadTransactions(it.result.recentlyAdded)
                 }
                 is Resource.Loading -> {
-                    binding.homeInfoProgressBar.setVisible(true)
+                    homeInfoProgressBar.setVisible(true)
                 }
                 is Resource.Failure -> {
                     context?.showToast(it.exception.message.toString())
-                    binding.homeInfoProgressBar.setVisible(false)
+                    homeInfoProgressBar.setVisible(false)
                 }
             }
         }
     }
 
-    private fun datePicker(dateType: DateType) {
+    private fun datePicker(dateType: DateType) = with(binding) {
         val datePickerFragment = DatePickerFragment()
         val supportFragmentManager = requireActivity().supportFragmentManager
         supportFragmentManager.setFragmentResultListener(
@@ -181,9 +181,9 @@ class HomeFragment : Fragment() {
             if (resultKey == "REQUEST_KEY") {
                 val date = bundle.getString("SELECTED_DATE")
                 if (dateType == DateType.MIN_DATE) {
-                    binding.selectedMinDateText.text = date
+                    selectedMinDateText.text = date
                 } else {
-                    binding.selectedMaxDateText.text = date
+                    selectedMaxDateText.text = date
                 }
             }
         }

@@ -30,36 +30,40 @@ class RegisterFragment : Fragment() {
         return binding.root
     }
 
-    private fun initViews(){
-        binding.loginButton.setOnClickListener {
+    private fun initViews() = with(binding) {
+        loginButton.setOnClickListener {
             findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
         }
-        binding.registerBackButton.setOnClickListener {
+        registerBackButton.setOnClickListener {
             findNavController().popBackStack()
         }
-        binding.registerButton.setOnClickListener {
+        registerButton.setOnClickListener {
             register()
         }
     }
 
-    private fun register(){
-            authViewModel.register(binding.fullNameInput.text.toString(),binding.emailInput.text.toString(),binding.passwordInput.text.toString())
-            authViewModel.registerState.observe(viewLifecycleOwner){
-                when(it){
-                    is Resource.Success ->{
-                        context?.showToast("Successfully Registered")
-                        binding.registerProgressBar.setVisible(false)
-                        findNavController().popBackStack()
-                    }
-                    is Resource.Loading ->{
-                        binding.registerProgressBar.setVisible(true)
-                    }
-                    is Resource.Failure ->{
-                        context?.showToast(it.exception.message.toString())
-                        binding.registerProgressBar.setVisible(false)
-                    }
+    private fun register() = with(binding) {
+        authViewModel.register(
+            fullNameInput.text.toString(),
+            emailInput.text.toString(),
+            passwordInput.text.toString()
+        )
+        authViewModel.registerState.observe(viewLifecycleOwner) {
+            when (it) {
+                is Resource.Success -> {
+                    context?.showToast("Successfully Registered")
+                    registerProgressBar.setVisible(false)
+                    findNavController().popBackStack()
+                }
+                is Resource.Loading -> {
+                    registerProgressBar.setVisible(true)
+                }
+                is Resource.Failure -> {
+                    context?.showToast(it.exception.message.toString())
+                    registerProgressBar.setVisible(false)
                 }
             }
+        }
     }
 
 }

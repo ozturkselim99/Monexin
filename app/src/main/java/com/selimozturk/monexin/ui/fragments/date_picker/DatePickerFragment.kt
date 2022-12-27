@@ -10,17 +10,17 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class DatePickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener{
+class DatePickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
 
     private val calendar = Calendar.getInstance()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = DatePickerDialog(
             requireActivity(), this,
-            calendar.get(Calendar.YEAR),  calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
             calendar.get(Calendar.DAY_OF_MONTH)
         )
-          dialog.datePicker.maxDate=Calendar.getInstance().timeInMillis
+        dialog.datePicker.maxDate = Calendar.getInstance().timeInMillis
         return dialog
     }
 
