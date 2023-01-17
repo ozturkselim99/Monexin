@@ -8,16 +8,18 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
 import com.selimozturk.monexin.R
-import com.selimozturk.monexin.adapter.TransactionAdapter
+import com.selimozturk.monexin.ui.TransactionAdapter
 import com.selimozturk.monexin.databinding.FragmentExpensesBinding
 import com.selimozturk.monexin.model.FilterModel
 import com.selimozturk.monexin.model.Transactions
+import com.selimozturk.monexin.ui.activities.MainViewModel
 import com.selimozturk.monexin.ui.fragments.date_picker.DatePickerFragment
 import com.selimozturk.monexin.ui.fragments.expenses.viewmodel.ExpensesViewModel
 import com.selimozturk.monexin.utils.*
@@ -26,6 +28,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class ExpensesFragment : Fragment() {
 
+    private val mainViewModel: MainViewModel by activityViewModels()
     private lateinit var binding: FragmentExpensesBinding
     private val adapter = TransactionAdapter()
     private val expensesViewModel by viewModels<ExpensesViewModel>()
@@ -41,12 +44,22 @@ class ExpensesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentExpensesBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         setupRecyclerview()
         initViews()
-        getExpenses(null)
         initBestMatchFilterList()
         dateFilterControl()
-        return binding.root
+        getExpenses(null)
+        observeExpensesReselected()
+    }
+    private fun observeExpensesReselected(){
+        mainViewModel.isExpensesReselected.observe(viewLifecycleOwner) {
+            binding.expenseTransactionsRW.smoothScrollToPosition(0)
+        }
     }
 
     private fun setupRecyclerview() = with(binding) {

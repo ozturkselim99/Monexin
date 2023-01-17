@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import app.futured.donut.DonutSection
 import com.google.android.material.appbar.AppBarLayout
 import com.selimozturk.monexin.R
-import com.selimozturk.monexin.adapter.TransactionAdapter
+import com.selimozturk.monexin.ui.TransactionAdapter
 import com.selimozturk.monexin.databinding.FragmentHomeBinding
 import com.selimozturk.monexin.model.Transactions
 import com.selimozturk.monexin.ui.fragments.date_picker.DatePickerFragment
@@ -45,11 +45,15 @@ class HomeFragment : Fragment() {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         minDate = "0"
         maxDate = System.currentTimeMillis().toString()
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         setupRecyclerview()
         getHomeInfo(minDate, maxDate)
         initViews()
         dateRangeFilterControl()
-        return binding.root
     }
 
     override fun onPause() = with(binding) {

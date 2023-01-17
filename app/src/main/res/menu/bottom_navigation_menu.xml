@@ -1,4 +1,5 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/homeFragment"
         android:enabled="true"
@@ -18,5 +19,5 @@
         android:id="@+id/profileFragment"
         android:enabled="true"
         android:icon="@drawable/ic_profile"
-        android:title="Profile"/>
+        android:title="Profile" />
 </menu>

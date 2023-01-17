@@ -7,11 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.selimozturk.monexin.databinding.ClearDataDialogBinding
 import com.selimozturk.monexin.databinding.FragmentProfileBinding
 import com.selimozturk.monexin.databinding.SignOutDialogBinding
 import com.selimozturk.monexin.ui.activities.IntroActivity
+import com.selimozturk.monexin.ui.activities.MainViewModel
 import com.selimozturk.monexin.ui.fragments.auth.viewmodel.AuthViewModel
 import com.selimozturk.monexin.ui.fragments.profile.viewmodel.ProfileViewModel
 import com.selimozturk.monexin.utils.Resource
@@ -29,15 +31,28 @@ class ProfileFragment : Fragment() {
     private lateinit var binding: FragmentProfileBinding
     private val authViewModel by viewModels<AuthViewModel>()
     private val profileViewModel by viewModels<ProfileViewModel>()
+    private val mainViewModel: MainViewModel by activityViewModels()
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentProfileBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         initViews()
         getProfileInfo()
-        return binding.root
+        observeProfileReselected()
+    }
+
+    private fun observeProfileReselected(){
+        mainViewModel.isProfileReselected.observe(viewLifecycleOwner) {
+            binding.profileNestedScrollView.smoothScrollTo(0,0)
+        }
     }
 
     private fun initViews() = with(binding) {

@@ -1,4 +1,4 @@
-package com.selimozturk.monexin.adapter
+package com.selimozturk.monexin.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

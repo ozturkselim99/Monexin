@@ -21,7 +21,7 @@
         <entry key="..\:/Users/SELIM/AndroidStudioProjects/monexin/app/src/main/res/drawable/ic_splash_logo.xml" value="0.2595" />
         <entry key="..\:/Users/SELIM/AndroidStudioProjects/monexin/app/src/main/res/drawable/splash_background.xml" value="0.1585" />
         <entry key="..\:/Users/SELIM/AndroidStudioProjects/monexin/app/src/main/res/layout/activity_intro.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/SELIM/AndroidStudioProjects/monexin/app/src/main/res/layout/activity_main.xml" value="0.264" />
+        <entry key="..\:/Users/SELIM/AndroidStudioProjects/monexin/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/Users/SELIM/AndroidStudioProjects/monexin/app/src/main/res/layout/activity_splash.xml" value="0.1" />
         <entry key="..\:/Users/SELIM/AndroidStudioProjects/monexin/app/src/main/res/layout/add_expense_dialog.xml" value="0.264" />
         <entry key="..\:/Users/SELIM/AndroidStudioProjects/monexin/app/src/main/res/layout/add_income_dialog.xml" value="0.20153985507246377" />
@@ -50,7 +50,7 @@
         <entry key="..\:/Users/SELIM/AndroidStudioProjects/monexin/app/src/main/res/layout/transaction_failed_dialog.xml" value="0.13179347826086957" />
         <entry key="..\:/Users/SELIM/AndroidStudioProjects/monexin/app/src/main/res/layout/transaction_item_row.xml" value="0.264" />
         <entry key="..\:/Users/SELIM/AndroidStudioProjects/monexin/app/src/main/res/layout/transaction_succesfully_dialog.xml" value="0.264" />
-        <entry key="..\:/Users/SELIM/AndroidStudioProjects/monexin/app/src/main/res/menu/bottom_navigation_menu.xml" value="0.253125" />
+        <entry key="..\:/Users/SELIM/AndroidStudioProjects/monexin/app/src/main/res/menu/bottom_navigation_menu.xml" value="0.2" />
         <entry key="..\:/Users/SELIM/AndroidStudioProjects/monexin/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1" />
       </map>
     </option>
