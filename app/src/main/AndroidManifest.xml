@@ -17,10 +17,10 @@
         android:supportsRtl="true"
         android:theme="@style/splashScreenTheme">
         <activity
-            android:name=".ui.activities.IntroActivity"
+            android:name=".ui.IntroActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.activities.SplashActivity"
+            android:name=".ui.SplashActivity"
             android:exported="true"
             android:theme="@style/splashScreenTheme">
             <intent-filter>
@@ -30,8 +30,8 @@
         </activity>
         <activity
             android:windowSoftInputMode="adjustPan"
-            android:name=".ui.activities.MainActivity"
-            android:exported="true"></activity>
+            android:name=".ui.MainActivity"
+            android:exported="true"/>
     </application>
 
 </manifest>

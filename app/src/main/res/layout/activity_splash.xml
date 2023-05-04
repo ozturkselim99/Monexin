@@ -2,58 +2,48 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/splashLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_gradient"
-    tools:context=".ui.activities.SplashActivity">
+    tools:context=".ui.SplashActivity">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/splashLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ImageView
+        android:id="@+id/splashLogo"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:contentDescription="@string/splash_logo"
+        android:src="@drawable/ic_splash_logo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/splashLogo"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:contentDescription="@string/splash_logo"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_splash_logo" />
+    <TextView
+        android:id="@+id/text_monexin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/cera_pro_medium"
+        android:text="@string/app_name"
+        android:textColor="@color/white"
+        android:textSize="48sp"
+        app:layout_constraintEnd_toEndOf="@+id/splashLogo"
+        app:layout_constraintStart_toStartOf="@+id/splashLogo"
+        app:layout_constraintTop_toBottomOf="@+id/splashLogo" />
 
-        <TextView
-            android:id="@+id/text_monexin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:fontFamily="@font/cera_pro_medium"
-            android:text="@string/app_name"
-            android:textColor="@color/white"
-            android:textSize="48sp"
-            app:layout_constraintEnd_toEndOf="@+id/splashLogo"
-            app:layout_constraintStart_toStartOf="@+id/splashLogo"
-            app:layout_constraintTop_toBottomOf="@+id/splashLogo"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="14dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="16dp"
-            android:fontFamily="@font/cera_pro_medium"
-            android:letterSpacing="0.20"
-            android:text="@string/expense_incomes"
-            android:textColor="@color/grey_100"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="@+id/text_monexin"
-            app:layout_constraintStart_toStartOf="@+id/text_monexin"
-            app:layout_constraintTop_toBottomOf="@+id/text_monexin" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="@font/cera_pro_medium"
+        android:letterSpacing="0.20"
+        android:text="@string/expenses_incomes"
+        android:textColor="@color/grey_100"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@+id/text_monexin"
+        app:layout_constraintStart_toStartOf="@+id/text_monexin"
+        app:layout_constraintTop_toBottomOf="@+id/text_monexin" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

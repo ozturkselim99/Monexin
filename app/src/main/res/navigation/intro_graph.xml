@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/registerFragment"
-        android:name="com.selimozturk.monexin.ui.fragments.auth.view.RegisterFragment"
+        android:name="com.selimozturk.monexin.ui.auth.view.RegisterFragment"
         android:label="fragment_register"
-        tools:layout="@layout/fragment_register" >
+        tools:layout="@layout/fragment_register">
         <action
             android:id="@+id/action_registerFragment_to_loginFragment"
             app:destination="@id/loginFragment"
@@ -18,9 +18,9 @@
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.selimozturk.monexin.ui.fragments.auth.view.LoginFragment"
+        android:name="com.selimozturk.monexin.ui.auth.view.LoginFragment"
         android:label="fragment_login"
-        tools:layout="@layout/fragment_login" >
+        tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/action_loginFragment_to_registerFragment"
             app:destination="@id/registerFragment"
@@ -29,13 +29,5 @@
             app:popEnterAnim="@anim/from_right"
             app:popExitAnim="@anim/to_left"
             app:popUpToInclusive="false" />
-        <action
-            android:id="@+id/action_loginFragment_to_denemeFragment2"
-            app:destination="@id/denemeFragment2" />
     </fragment>
-    <fragment
-        android:id="@+id/denemeFragment2"
-        android:name="com.selimozturk.monexin.ui.fragments.DenemeFragment"
-        android:label="fragment_deneme"
-        tools:layout="@layout/fragment_deneme" />
 </navigation>

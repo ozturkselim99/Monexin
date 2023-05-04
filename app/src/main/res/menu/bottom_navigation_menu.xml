@@ -1,23 +1,22 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/homeFragment"
         android:enabled="true"
         android:icon="@drawable/ic_home"
-        android:title="Home"/>
+        android:title="@string/home" />
     <item
         android:id="@+id/expensesFragment"
         android:enabled="true"
         android:icon="@drawable/ic_arrow_downward"
-        android:title="Expenses"/>
+        android:title="@string/expenses" />
     <item
         android:id="@+id/incomesFragment"
         android:enabled="true"
         android:icon="@drawable/ic_arrow_upward"
-        android:title="Incomes"/>
+        android:title="@string/incomes" />
     <item
         android:id="@+id/profileFragment"
         android:enabled="true"
         android:icon="@drawable/ic_profile"
-        android:title="Profile" />
+        android:title="@string/profile" />
 </menu>

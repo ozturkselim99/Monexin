@@ -170,7 +170,6 @@
                     android:scaleType="centerCrop" />
             </RelativeLayout>
 
-
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/transactionEditButton"
                 style="@style/buttons"
@@ -182,6 +181,5 @@
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

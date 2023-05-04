@@ -9,7 +9,7 @@
     <androidx.camera.view.PreviewView
         android:id="@+id/view_finder"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/takePhotoButton"
@@ -29,9 +29,9 @@
         android:id="@+id/takenPhoto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:contentDescription="@string/taken_photo"
         android:scaleType="centerCrop"
-        android:visibility="invisible"
-        android:contentDescription="@string/taken_photo" />
+        android:visibility="invisible" />
 
     <LinearLayout
         android:id="@+id/takenPhotoConfirmLayout"
@@ -47,20 +47,20 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@color/grey_200"
+            android:contentDescription="@string/accept_taken_photo"
             android:src="@drawable/ic_check"
-            app:tint="@color/main_color"
-            android:contentDescription="@string/accept_taken_photo" />
+            app:tint="@color/main_color" />
 
         <ImageButton
-            android:layout_marginStart="16dp"
             android:id="@+id/cancelTakenPhoto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
             android:layout_weight="1"
             android:background="@color/grey_200"
+            android:contentDescription="@string/cancel_taken_photo"
             android:src="@drawable/ic_cancel"
-            app:tint="@color/main_color"
-            android:contentDescription="@string/cancel_taken_photo" />
+            app:tint="@color/main_color" />
 
     </LinearLayout>
 

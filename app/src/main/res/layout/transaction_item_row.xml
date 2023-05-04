@@ -5,7 +5,8 @@
     android:id="@+id/transactionItemRow"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="8dp">
+    android:layout_marginTop="8dp"
+    app:cardElevation="0dp">
 
 
     <LinearLayout
@@ -14,12 +15,13 @@
         android:layout_height="wrap_content"
         android:padding="16dp">
 
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_gravity="center_vertical"
             android:backgroundTint="@color/grey_200"
-            app:cardCornerRadius="8dp">
+            app:cardCornerRadius="8dp"
+            app:cardElevation="0dp">
 
             <TextView
                 android:id="@+id/firsLetterOfTransactionName"
@@ -27,10 +29,10 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:fontFamily="@font/cera_pro_bold"
-                tools:text="@string/sample_letter"
                 android:textColor="@color/main_color"
-                android:textSize="16sp" />
-        </androidx.cardview.widget.CardView>
+                android:textSize="16sp"
+                tools:text="@string/sample_letter" />
+        </com.google.android.material.card.MaterialCardView>
 
         <LinearLayout
             android:layout_width="0dp"
@@ -45,9 +47,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/cera_pro_medium"
-                tools:text="@string/sample_title"
                 android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                tools:text="@string/sample_title" />
 
             <TextView
                 android:id="@+id/transactionDescription"
@@ -55,8 +57,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:fontFamily="@font/cera_pro_medium"
-                tools:text="@string/sample_description"
-                android:textColor="@color/grey_600" />
+                android:textColor="@color/grey_600"
+                tools:text="@string/sample_description" />
 
             <TextView
                 android:id="@+id/transactionTime"
@@ -64,8 +66,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:fontFamily="@font/cera_pro_medium"
-                tools:text="@string/sample_joined_date"
-                android:textColor="@color/grey_600" />
+                android:textColor="@color/grey_600"
+                tools:text="@string/sample_joined_date" />
         </LinearLayout>
 
         <TextView
@@ -74,9 +76,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:fontFamily="@font/cera_pro_bold"
-            tools:text="@string/sample_expense_number"
             android:textColor="@color/accent_3"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            tools:text="@string/sample_expense_number" />
     </LinearLayout>
 
 </com.google.android.material.card.MaterialCardView>

@@ -6,71 +6,43 @@
     android:layout_height="match_parent"
     android:background="@color/grey_200"
     android:padding="20dp"
-    tools:context=".ui.fragments.incomes.view.IncomesFragment">
-
-    <ProgressBar
-        android:visibility="invisible"
-        android:id="@+id/incomesProgressBar"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <LinearLayout
-        android:id="@+id/incomesTextAndFilterButtonLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:baselineAligned="false"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/activeIncomesText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/cera_pro_medium"
-            android:text="@string/active_incomes"
-            android:textColor="@color/black"
-            android:textSize="20sp" />
-
-        <TextView
-            android:id="@+id/incomesAmountText"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="4dp"
-            android:layout_weight="1"
-            android:fontFamily="@font/cera_pro_medium"
-            android:textColor="@color/accent_3"
-            tools:text="@string/sample_income_number" />
-    </LinearLayout>
+    tools:context=".ui.incomes.view.IncomesFragment">
 
     <TextView
-        android:visibility="gone"
-        android:id="@+id/incomesTimeText"
-        android:layout_width="match_parent"
+        android:id="@+id/activeIncomesText"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:fontFamily="@font/cera_pro_medium"
-        android:text="@string/all_time"
-        android:textColor="@color/grey_600"
-        app:layout_constraintTop_toBottomOf="@id/incomesTextAndFilterButtonLayout">
+        android:text="@string/active_incomes"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
-    </TextView>
+    <TextView
+        android:id="@+id/incomesAmountText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:fontFamily="@font/cera_pro_medium"
+        android:textColor="@color/accent_3"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/activeIncomesText"
+        app:layout_constraintTop_toTopOf="@+id/activeIncomesText"/>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/incomesSearchTextContainer"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:hint="@string/search"
         app:boxStrokeColor="@color/grey_600"
         app:endIconMode="clear_text"
         app:hintTextColor="@color/grey_600"
-        app:layout_constraintTop_toBottomOf="@id/incomesTimeText">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/incomesAmountText">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/incomesSearchInput"
@@ -84,15 +56,19 @@
 
     <TextView
         android:id="@+id/filtersText"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
+        android:drawableEnd="@drawable/ic_arrow_down"
+        android:drawablePadding="8dp"
         android:fontFamily="@font/cera_pro_bold"
         android:text="@string/filters"
         android:textColor="@color/black"
         android:textSize="16sp"
-        app:drawableEndCompat="@drawable/ic_arrow_down"
-        app:layout_constraintTop_toBottomOf="@id/incomesSearchTextContainer" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/incomesSearchTextContainer"/>
+
 
     <include
         android:id="@+id/filtersLayout"
@@ -117,6 +93,7 @@
         app:layout_constraintStart_toStartOf="@+id/incomeTransactionsRW"
         app:layout_constraintTop_toTopOf="@+id/incomeTransactionsRW" />
 
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/incomeTransactionsRW"
         android:layout_width="match_parent"
@@ -124,4 +101,15 @@
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/filtersLayout" />
+
+    <ProgressBar
+        android:id="@+id/incomesProgressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

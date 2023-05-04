@@ -2,13 +2,14 @@ package com.selimozturk.monexin.data
 
 import android.net.Uri
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.selimozturk.monexin.model.*
 import com.selimozturk.monexin.utils.BestMatchResult
 import com.selimozturk.monexin.utils.Resource
 import com.selimozturk.monexin.utils.await
+import java.io.IOException
 import javax.inject.Inject
 
 class FirebaseRepositoryImpl @Inject constructor(
@@ -19,18 +20,20 @@ class FirebaseRepositoryImpl @Inject constructor(
 
     override suspend fun getProfileInfo(): Resource<UserInfo> {
         return try {
-            val profileInfo =
-                firebaseFirestore.collection("users").document(firebaseAuth.currentUser?.uid!!)
-                    .get().await()
-            Resource.Success(
-                UserInfo(
-                    profileInfo.data?.get("accountNumber").toString(),
-                    profileInfo.data?.get("name").toString(),
-                    profileInfo.data?.get("email").toString(),
-                    profileInfo.data?.get("device").toString(),
-                    profileInfo.data?.get("joinedDate").toString()
-                )
-            )
+            val currentUser = firebaseAuth.currentUser
+            if (currentUser == null) {
+                Resource.Failure(Exception("User is not authenticated"))
+            } else {
+                val profileInfo =
+                    firebaseFirestore.collection("users").document(currentUser.uid).get().await()
+                val accountNumber = profileInfo.data?.get("accountNumber").toString()
+                val name = profileInfo.data?.get("name").toString()
+                val email = profileInfo.data?.get("email").toString()
+                val device = profileInfo.data?.get("device").toString()
+                val joinedDate = profileInfo.data?.get("joinedDate").toString()
+
+                Resource.Success(UserInfo(accountNumber, name, email, device, joinedDate))
+            }
         } catch (e: Exception) {
             e.printStackTrace()
             Resource.Failure(e)
@@ -44,20 +47,20 @@ class FirebaseRepositoryImpl @Inject constructor(
         return try {
             val userPath =
                 firebaseFirestore.collection("users").document(firebaseAuth.currentUser?.uid!!)
-            val expensesPath = userPath.collection("expenses")
-            val incomesPath = userPath.collection("incomes")
+            val expensesPath = userPath.collection("expense")
+            val incomesPath = userPath.collection("income")
+
             photoUri?.let {
                 firebaseStorage.reference.child(transaction.photoPath).putFile(it).await()
             }
-            val result: DocumentReference
-            if (transaction.type == "Expense") {
-                result = expensesPath.add(transaction).await()
-                expensesPath.document(result.id).update("id", result.id).await()
-            } else {
-                result = incomesPath.add(transaction).await()
-                incomesPath.document(result.id).update("id", result.id).await()
+
+            val id = when (transaction.type) {
+                "expense" -> expensesPath.add(transaction).await().id
+                else -> incomesPath.add(transaction).await().id
             }
-            Resource.Success(result.id)
+
+            userPath.collection(transaction.type).document(id).update("id", id).await()
+            Resource.Success(id)
         } catch (e: Exception) {
             e.printStackTrace()
             Resource.Failure(e)
@@ -71,42 +74,18 @@ class FirebaseRepositoryImpl @Inject constructor(
         return try {
             val userPath =
                 firebaseFirestore.collection("users").document(firebaseAuth.currentUser?.uid!!)
-            val expensesPath = userPath.collection("expenses")
-            val incomesPath = userPath.collection("incomes")
-            if (transaction.type == "Expense") {
-                expensesPath.document(transaction.id).update(
-                    "title",
-                    transaction.title,
-                    "description",
-                    transaction.description,
-                    "amount",
-                    transaction.amount,
-                    "type",
-                    transaction.type,
-                    "photoPath",
-                    transaction.photoPath
-                ).await()
-            } else {
-                incomesPath.document(transaction.id).update(
-                    "title",
-                    transaction.title,
-                    "description",
-                    transaction.description,
-                    "amount",
-                    transaction.amount,
-                    "type",
-                    transaction.type,
-                    "photoPath",
-                    transaction.photoPath
-                ).await()
+            val (collectionPath, documentId) = when (transaction.type) {
+                "expense" -> Pair(userPath.collection("expense"), transaction.id)
+                "income" -> Pair(userPath.collection("income"), transaction.id)
+                else -> throw IllegalArgumentException("Invalid transaction type: ${transaction.type}")
             }
+            updateTransactionInCollection(collectionPath, documentId, transaction)
             var result = "Success"
             photoUri?.let {
                 result = firebaseStorage.reference.child(transaction.photoPath).putFile(it)
                     .await().uploadSessionUri.toString()
             }
             Resource.Success(result)
-
         } catch (e: Exception) {
             e.printStackTrace()
             Resource.Failure(e)
@@ -115,23 +94,29 @@ class FirebaseRepositoryImpl @Inject constructor(
 
     override suspend fun getHomeInfo(minDate: String?, maxDate: String?): Resource<HomeInfo> {
         return try {
-            val activeExpense: Double
-            val activeIncome: Double
-            val expenses =
-                firebaseFirestore.collection("users").document(firebaseAuth.currentUser?.uid!!)
-                    .collection("expenses").get().await()
-            val incomes =
-                firebaseFirestore.collection("users").document(firebaseAuth.currentUser?.uid!!)
-                    .collection("incomes").get().await()
-            val list =
-                expenses.toObjects(Transactions::class.java) + incomes.toObjects(Transactions::class.java)
-            activeExpense = expenses.toObjects(Transactions::class.java)
-                .filter { transactions -> transactions.createdAt >= minDate.toString() && transactions.createdAt <= maxDate.toString() }
-                .sumOf { it.amount }
-            activeIncome = incomes.toObjects(Transactions::class.java)
-                .filter { transactions -> transactions.createdAt >= minDate.toString() && transactions.createdAt <= maxDate.toString() }
-                .sumOf { it.amount }
-            val recentlyAdded = list.sortedByDescending { it.createdAt }.take(5)
+            val userId = firebaseAuth.currentUser?.uid!!
+            val expensesPath =
+                firebaseFirestore.collection("users").document(userId).collection("expense")
+            val incomesPath =
+                firebaseFirestore.collection("users").document(userId).collection("income")
+
+            val activeExpense =
+                expensesPath.whereGreaterThanOrEqualTo("createdAt", minDate.toString())
+                    .whereLessThanOrEqualTo("createdAt", maxDate.toString())
+                    .get().await()
+                    .sumOf { it.getDouble("amount") ?: 0.0 }
+
+            val activeIncome =
+                incomesPath.whereGreaterThanOrEqualTo("createdAt", minDate.toString())
+                    .whereLessThanOrEqualTo("createdAt", maxDate.toString())
+                    .get().await()
+                    .sumOf { it.getDouble("amount") ?: 0.0 }
+
+            val list = (expensesPath.get().await().toObjects(Transactions::class.java) +
+                    incomesPath.get().await().toObjects(Transactions::class.java))
+            val recentlyAdded = list.sortedByDescending { it.createdAt }
+                .take(5)
+
             Resource.Success(
                 HomeInfo(
                     firebaseAuth.currentUser?.displayName!!,
@@ -148,51 +133,28 @@ class FirebaseRepositoryImpl @Inject constructor(
 
     override suspend fun getExpenses(filterModel: FilterModel?): Resource<ExpensesInfo> {
         return try {
-            var activeExpense: Double
-            val expensesList: List<Transactions>
             val expenses =
                 firebaseFirestore.collection("users").document(firebaseAuth.currentUser?.uid!!)
-                    .collection("expenses").get().await()
-            activeExpense = expenses.toObjects(Transactions::class.java).sumOf { it.amount }
-            if (filterModel != null) {
-                when (filterModel.bestMatchResult) {
-                    BestMatchResult.DESCENDING_BY_DATE -> {
-                        expensesList = expenses.toObjects(Transactions::class.java)
-                            .sortedByDescending { it.createdAt }
-                            .filter { transactions -> transactions.createdAt >= filterModel.minDate && transactions.createdAt <= filterModel.maxDate && transactions.amount >= filterModel.minAmount.toDouble() && transactions.amount <= filterModel.maxAmount.toDouble() }
-                        activeExpense = expenses.toObjects(Transactions::class.java)
-                            .filter { transactions -> transactions.createdAt >= filterModel.minDate && transactions.createdAt <= filterModel.maxDate && transactions.amount >= filterModel.minAmount.toDouble() && transactions.amount <= filterModel.maxAmount.toDouble() }
-                            .sumOf { it.amount }
-                    }
-                    BestMatchResult.ASCENDING_BY_DATE -> {
-                        expensesList = expenses.toObjects(Transactions::class.java)
-                            .sortedBy { it.createdAt }
-                            .filter { transactions -> transactions.createdAt >= filterModel.minDate && transactions.createdAt <= filterModel.maxDate && transactions.amount >= filterModel.minAmount.toDouble() && transactions.amount <= filterModel.maxAmount.toDouble() }
-                        activeExpense = expenses.toObjects(Transactions::class.java)
-                            .filter { transactions -> transactions.createdAt >= filterModel.minDate && transactions.createdAt <= filterModel.maxDate && transactions.amount >= filterModel.minAmount.toDouble() && transactions.amount <= filterModel.maxAmount.toDouble() }
-                            .sumOf { it.amount }
-                    }
-                    BestMatchResult.DECREASING_BY_AMOUNT -> {
-                        expensesList = expenses.toObjects(Transactions::class.java)
-                            .sortedByDescending { it.amount }
-                            .filter { transactions -> transactions.createdAt >= filterModel.minDate && transactions.createdAt <= filterModel.maxDate && transactions.amount >= filterModel.minAmount.toDouble() && transactions.amount <= filterModel.maxAmount.toDouble() }
-                        activeExpense = expenses.toObjects(Transactions::class.java)
-                            .filter { transactions -> transactions.createdAt >= filterModel.minDate && transactions.createdAt <= filterModel.maxDate && transactions.amount >= filterModel.minAmount.toDouble() && transactions.amount <= filterModel.maxAmount.toDouble() }
-                            .sumOf { it.amount }
-                    }
-                    BestMatchResult.INCREASING_BY_AMOUNT -> {
-                        expensesList = expenses.toObjects(Transactions::class.java)
-                            .sortedBy { it.amount }
-                            .filter { transactions -> transactions.createdAt >= filterModel.minDate && transactions.createdAt <= filterModel.maxDate && transactions.amount >= filterModel.minAmount.toDouble() && transactions.amount <= filterModel.maxAmount.toDouble() }
-                        activeExpense = expenses.toObjects(Transactions::class.java)
-                            .filter { transactions -> transactions.createdAt >= filterModel.minDate && transactions.createdAt <= filterModel.maxDate && transactions.amount >= filterModel.minAmount.toDouble() && transactions.amount <= filterModel.maxAmount.toDouble() }
-                            .sumOf { it.amount }
-                    }
+                    .collection("expense").get().await()
+
+            val filteredExpenses = expenses.toObjects(Transactions::class.java)
+                .filter { transactions ->
+                    filterModel?.let {
+                        transactions.createdAt >= it.minDate &&
+                                transactions.createdAt <= it.maxDate &&
+                                transactions.amount >= it.minAmount.toDouble() &&
+                                transactions.amount <= it.maxAmount.toDouble()
+                    } ?: true
                 }
-            } else {
-                expensesList =
-                    expenses.toObjects(Transactions::class.java).sortedByDescending { it.createdAt }
+
+            val expensesList = when (filterModel?.bestMatchResult) {
+                BestMatchResult.ASCENDING_BY_DATE -> filteredExpenses.sortedBy { it.createdAt }
+                BestMatchResult.DECREASING_BY_AMOUNT -> filteredExpenses.sortedByDescending { it.amount }
+                BestMatchResult.INCREASING_BY_AMOUNT -> filteredExpenses.sortedBy { it.amount }
+                else -> filteredExpenses.sortedByDescending { it.createdAt }
             }
+
+            val activeExpense = filteredExpenses.sumOf { it.amount }
 
             Resource.Success(ExpensesInfo(activeExpense.toString(), expensesList))
         } catch (e: Exception) {
@@ -203,51 +165,28 @@ class FirebaseRepositoryImpl @Inject constructor(
 
     override suspend fun getIncomes(filterModel: FilterModel?): Resource<IncomesInfo> {
         return try {
-            var activeIncome: Double
-            val incomesList: List<Transactions>
             val incomes =
                 firebaseFirestore.collection("users").document(firebaseAuth.currentUser?.uid!!)
-                    .collection("incomes").get().await()
-            activeIncome = incomes.toObjects(Transactions::class.java).sumOf { it.amount }
-            if (filterModel != null) {
-                when (filterModel.bestMatchResult) {
-                    BestMatchResult.DESCENDING_BY_DATE -> {
-                        incomesList = incomes.toObjects(Transactions::class.java)
-                            .sortedByDescending { it.createdAt }
-                            .filter { transactions -> transactions.createdAt >= filterModel.minDate && transactions.createdAt <= filterModel.maxDate && transactions.amount >= filterModel.minAmount.toDouble() && transactions.amount <= filterModel.maxAmount.toDouble() }
-                        activeIncome = incomes.toObjects(Transactions::class.java)
-                            .filter { transactions -> transactions.createdAt >= filterModel.minDate && transactions.createdAt <= filterModel.maxDate && transactions.amount >= filterModel.minAmount.toDouble() && transactions.amount <= filterModel.maxAmount.toDouble() }
-                            .sumOf { it.amount }
-                    }
-                    BestMatchResult.ASCENDING_BY_DATE -> {
-                        incomesList = incomes.toObjects(Transactions::class.java)
-                            .sortedBy { it.createdAt }
-                            .filter { transactions -> transactions.createdAt >= filterModel.minDate && transactions.createdAt <= filterModel.maxDate && transactions.amount >= filterModel.minAmount.toDouble() && transactions.amount <= filterModel.maxAmount.toDouble() }
-                        activeIncome = incomes.toObjects(Transactions::class.java)
-                            .filter { transactions -> transactions.createdAt >= filterModel.minDate && transactions.createdAt <= filterModel.maxDate && transactions.amount >= filterModel.minAmount.toDouble() && transactions.amount <= filterModel.maxAmount.toDouble() }
-                            .sumOf { it.amount }
-                    }
-                    BestMatchResult.DECREASING_BY_AMOUNT -> {
-                        incomesList = incomes.toObjects(Transactions::class.java)
-                            .sortedByDescending { it.amount }
-                            .filter { transactions -> transactions.createdAt >= filterModel.minDate && transactions.createdAt <= filterModel.maxDate && transactions.amount >= filterModel.minAmount.toDouble() && transactions.amount <= filterModel.maxAmount.toDouble() }
-                        activeIncome = incomes.toObjects(Transactions::class.java)
-                            .filter { transactions -> transactions.createdAt >= filterModel.minDate && transactions.createdAt <= filterModel.maxDate && transactions.amount >= filterModel.minAmount.toDouble() && transactions.amount <= filterModel.maxAmount.toDouble() }
-                            .sumOf { it.amount }
-                    }
-                    BestMatchResult.INCREASING_BY_AMOUNT -> {
-                        incomesList = incomes.toObjects(Transactions::class.java)
-                            .sortedBy { it.amount }
-                            .filter { transactions -> transactions.createdAt >= filterModel.minDate && transactions.createdAt <= filterModel.maxDate && transactions.amount >= filterModel.minAmount.toDouble() && transactions.amount <= filterModel.maxAmount.toDouble() }
-                        activeIncome = incomes.toObjects(Transactions::class.java)
-                            .filter { transactions -> transactions.createdAt >= filterModel.minDate && transactions.createdAt <= filterModel.maxDate && transactions.amount >= filterModel.minAmount.toDouble() && transactions.amount <= filterModel.maxAmount.toDouble() }
-                            .sumOf { it.amount }
-                    }
+                    .collection("income").get().await()
+
+            val filteredIncomes = incomes.toObjects(Transactions::class.java)
+                .filter { transactions ->
+                    filterModel?.let {
+                        transactions.createdAt >= it.minDate &&
+                                transactions.createdAt <= it.maxDate &&
+                                transactions.amount >= it.minAmount.toDouble() &&
+                                transactions.amount <= it.maxAmount.toDouble()
+                    } ?: true
                 }
-            } else {
-                incomesList =
-                    incomes.toObjects(Transactions::class.java).sortedByDescending { it.createdAt }
+
+            val incomesList = when (filterModel?.bestMatchResult) {
+                BestMatchResult.ASCENDING_BY_DATE -> filteredIncomes.sortedBy { it.createdAt }
+                BestMatchResult.DECREASING_BY_AMOUNT -> filteredIncomes.sortedByDescending { it.amount }
+                BestMatchResult.INCREASING_BY_AMOUNT -> filteredIncomes.sortedBy { it.amount }
+                else -> filteredIncomes.sortedByDescending { it.createdAt }
             }
+
+            val activeIncome = filteredIncomes.sumOf { it.amount }
 
             Resource.Success(IncomesInfo(activeIncome.toString(), incomesList))
         } catch (e: Exception) {
@@ -258,14 +197,14 @@ class FirebaseRepositoryImpl @Inject constructor(
 
     override suspend fun clearAllTransaction() {
         try {
-            val expenses =
-                firebaseFirestore.collection("users").document(firebaseAuth.currentUser?.uid!!)
-                    .collection("expenses").get().await()
-            expenses.forEach{document->document.reference.delete()}
-            val incomes =
-                firebaseFirestore.collection("users").document(firebaseAuth.currentUser?.uid!!)
-                    .collection("incomes").get().await()
-            incomes.forEach{document->document.reference.delete()}
+            val expensesRef =
+                firebaseFirestore.collection("users").document(firebaseAuth.currentUser!!.uid)
+                    .collection("expense")
+            expensesRef.get().await().forEach { document -> document.reference.delete() }
+            val incomesRef =
+                firebaseFirestore.collection("users").document(firebaseAuth.currentUser!!.uid)
+                    .collection("income")
+            incomesRef.get().await().forEach { document -> document.reference.delete() }
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -273,16 +212,20 @@ class FirebaseRepositoryImpl @Inject constructor(
 
     override suspend fun deleteTransaction(transaction: Transactions) {
         try {
-            if(transaction.photoPath!="") {
+            if (transaction.photoPath.isNotEmpty()) {
                 firebaseStorage.reference.child(transaction.photoPath).delete()
             }
-            if (transaction.type == "Expense") {
-                firebaseFirestore.collection("users").document(firebaseAuth.currentUser?.uid!!)
-                    .collection("expenses").document(transaction.id).delete().await()
-            } else {
-                firebaseFirestore.collection("users").document(firebaseAuth.currentUser?.uid!!)
-                    .collection("incomes").document(transaction.id).delete().await()
-            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        try {
+            val collectionName = if (transaction.type == "expense") "expense" else "income"
+            firebaseFirestore.collection("users")
+                .document(firebaseAuth.currentUser?.uid!!)
+                .collection(collectionName)
+                .document(transaction.id)
+                .delete().await()
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -293,9 +236,28 @@ class FirebaseRepositoryImpl @Inject constructor(
             val result = firebaseStorage.reference.child(url!!).downloadUrl.await()
             Resource.Success(result)
         } catch (e: Exception) {
-            e.printStackTrace()
-            Resource.Failure(e)
+            val errorMsg = "Failed to download image with URL: $url. ${e.message}"
+            Resource.Failure(IOException(errorMsg, e))
         }
+    }
+
+    private suspend fun updateTransactionInCollection(
+        collection: CollectionReference,
+        documentId: String,
+        transaction: Transactions
+    ) {
+        collection.document(documentId).update(
+            "title",
+            transaction.title,
+            "description",
+            transaction.description,
+            "amount",
+            transaction.amount,
+            "type",
+            transaction.type,
+            "photoPath",
+            transaction.photoPath
+        ).await()
     }
 
 }

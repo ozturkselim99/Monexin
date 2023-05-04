@@ -50,7 +50,7 @@
     <string name="edit_button">Edit Button</string>
     <string name="sign_out">Sign Out</string>
     <string name="splash_logo">Splash Logo</string>
-    <string name="expense_incomes">Expense-Incomes</string>
+    <string name="expenses_incomes">Expenses-Incomes</string>
     <string name="hello_string">Hello, Selim</string>
     <string name="sample_expense_number">24,420,00</string>
     <string name="active_expense">Active Expense</string>
@@ -119,6 +119,8 @@
     <string name="transaction_image_not_found">Transaction Image Not Found</string>
     <string name="clear_date_range_button">Clear date range button</string>
     <string name="update_transaction">Update Transaction</string>
+    <string name="sasa">Monexin</string>
+    <string name="home">Home</string>
     <string-array name="bestMatchFilterList">
         <item>Descending by date</item>
         <item>Ascending by date</item>

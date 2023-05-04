@@ -5,53 +5,52 @@
     android:layout_height="match_parent"
     android:padding="16dp">
 
+    <TextView
+        android:id="@+id/signout_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/cera_pro_bold"
+        android:text="@string/sign_out"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/are_you_sure_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/cera_pro_medium"
+        android:text="@string/are_you_sure_do_you_wanna_sign_out"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toBottomOf="@id/signout_text" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_marginTop="16dp"
+        android:gravity="end"
+        app:layout_constraintTop_toBottomOf="@id/are_you_sure_text">
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/cera_pro_bold"
-            android:text="@string/sign_out"
-            android:textColor="@color/black"
-            android:textSize="24sp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/cera_pro_medium"
-            android:text="@string/are_you_sure_do_you_wanna_sign_out"
-            android:textColor="@color/black" />
-
-        <LinearLayout
+            android:id="@+id/signOutCancelButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_marginTop="16dp">
+            android:layout_marginEnd="16dp"
+            android:fontFamily="@font/cera_pro_medium"
+            android:text="@string/cancel"
+            android:textAllCaps="true"
+            android:textColor="@color/black" />
 
-            <TextView
-                android:id="@+id/signOutCancelButton"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="16dp"
-                android:fontFamily="@font/cera_pro_medium"
-                android:text="@string/cancel"
-                android:textAllCaps="true"
-                android:textColor="@color/black" />
+        <TextView
+            android:id="@+id/signOutButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/cera_pro_medium"
+            android:text="@string/clear"
+            android:textAllCaps="true"
+            android:textColor="@color/black" />
 
-            <TextView
-                android:id="@+id/signOutButton"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:fontFamily="@font/cera_pro_medium"
-                android:text="@string/sign_out"
-                android:textAllCaps="true"
-                android:textColor="@color/black" />
-        </LinearLayout>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

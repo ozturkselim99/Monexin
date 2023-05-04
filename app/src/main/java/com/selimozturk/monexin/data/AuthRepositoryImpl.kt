@@ -18,12 +18,12 @@ class AuthRepositoryImpl @Inject constructor(
     override suspend fun login(email: String, password: String): Resource<FirebaseUser> {
         return try {
             val result = firebaseAuth.signInWithEmailAndPassword(email, password).await()
-            Resource.Success(result.user!!)
+            val user = result.user ?: throw Exception("User is null")
+            Resource.Success(user)
         } catch (e: Exception) {
             e.printStackTrace()
             Resource.Failure(e)
         }
-
     }
 
     override suspend fun register(
@@ -33,18 +33,19 @@ class AuthRepositoryImpl @Inject constructor(
     ): Resource<FirebaseUser> {
         return try {
             val result = firebaseAuth.createUserWithEmailAndPassword(email, password).await()
-            result.user?.updateProfile(
+            val user = result.user ?: throw Exception("User is null")
+            user.updateProfile(
                 UserProfileChangeRequest.Builder().setDisplayName(name).build()
-            )?.await()
-            val userMap = HashMap<String, String>()
-            userMap["accountNumber"] = result.user?.uid!!
-            userMap["joinedDate"] =
-                result.user?.metadata?.creationTimestamp.toString().convertToLongTime()
-            userMap["name"] = name
-            userMap["email"] = email
-            userMap["device"] = Build.MANUFACTURER + " " + Build.MODEL
-            firebaseFirestore.collection("users").document(result.user?.uid!!).set(userMap).await()
-            Resource.Success(result.user!!)
+            ).await()
+            val userMap = mutableMapOf<String, String>().apply {
+                put("accountNumber", user.uid)
+                put("joinedDate", user.metadata?.creationTimestamp?.toString()?.convertToLongTime() ?: "")
+                put("name", name)
+                put("email", email)
+                put("device", "${Build.MANUFACTURER} ${Build.MODEL}")
+            }
+            firebaseFirestore.collection("users").document(user.uid).set(userMap).await()
+            Resource.Success(user)
         } catch (e: Exception) {
             e.printStackTrace()
             Resource.Failure(e)

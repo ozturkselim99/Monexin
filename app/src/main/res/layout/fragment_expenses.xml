@@ -1,69 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/grey_200"
     android:padding="20dp"
-    tools:context=".ui.fragments.expenses.view.ExpensesFragment">
-
-    <LinearLayout
-        android:id="@+id/expensesTextAndFilterButtonLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        android:baselineAligned="false">
-            <TextView
-                android:id="@+id/activeExpensesText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/cera_pro_medium"
-                android:text="@string/active_expenses"
-                android:textColor="@color/black"
-                android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/expensesAmountText"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1"
-                android:layout_marginStart="4dp"
-                android:fontFamily="@font/cera_pro_medium"
-                tools:text="@string/sample_expense_number"
-                android:textColor="@color/accent_4" />
-    </LinearLayout>
+    tools:context=".ui.expenses.view.ExpensesFragment">
 
     <TextView
-        android:visibility="gone"
-        android:id="@+id/expensesFiltersText"
-        android:layout_width="match_parent"
+        android:id="@+id/activeExpensesText"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:fontFamily="@font/cera_pro_medium"
-        android:text="@string/all_time"
-        android:textColor="@color/grey_600"
-        app:layout_constraintTop_toBottomOf="@id/expensesTextAndFilterButtonLayout">
+        android:text="@string/active_expenses"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
-    </TextView>
-
+    <TextView
+        android:id="@+id/expensesAmountText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:fontFamily="@font/cera_pro_medium"
+        android:textColor="@color/accent_4"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/activeExpensesText"
+        app:layout_constraintTop_toTopOf="@+id/activeExpensesText"/>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/expensesSearchTextContainer"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:hint="@string/search"
         app:boxStrokeColor="@color/grey_600"
         app:endIconMode="clear_text"
         app:hintTextColor="@color/grey_600"
-        app:layout_constraintTop_toBottomOf="@id/expensesFiltersText">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/expensesAmountText">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/expensesSearchInput"
-            android:saveEnabled="false"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawableStart="@drawable/ic_search"
@@ -74,15 +57,18 @@
 
     <TextView
         android:id="@+id/filtersText"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
+        android:drawableEnd="@drawable/ic_arrow_down"
+        android:drawablePadding="8dp"
         android:fontFamily="@font/cera_pro_bold"
         android:text="@string/filters"
         android:textColor="@color/black"
         android:textSize="16sp"
-        app:drawableEndCompat="@drawable/ic_arrow_down"
-        app:layout_constraintTop_toBottomOf="@id/expensesSearchTextContainer" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/expensesSearchTextContainer"/>
 
 
     <include

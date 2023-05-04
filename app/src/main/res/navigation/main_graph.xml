@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.selimozturk.monexin.ui.fragments.home.view.HomeFragment"
+        android:name="com.selimozturk.monexin.ui.home.view.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" >
+        tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_homeFragment_to_transactionFragment"
             app:destination="@id/transactionFragment"
@@ -28,9 +28,9 @@
     </fragment>
     <fragment
         android:id="@+id/expensesFragment"
-        android:name="com.selimozturk.monexin.ui.fragments.expenses.view.ExpensesFragment"
+        android:name="com.selimozturk.monexin.ui.expenses.view.ExpensesFragment"
         android:label="fragment_expenses"
-        tools:layout="@layout/fragment_expenses" >
+        tools:layout="@layout/fragment_expenses">
         <action
             android:id="@+id/action_expensesFragment_to_transactionDetail"
             app:destination="@id/transactionDetail"
@@ -41,9 +41,9 @@
     </fragment>
     <fragment
         android:id="@+id/incomesFragment"
-        android:name="com.selimozturk.monexin.ui.fragments.incomes.view.IncomesFragment"
+        android:name="com.selimozturk.monexin.ui.incomes.view.IncomesFragment"
         android:label="fragment_incomes"
-        tools:layout="@layout/fragment_incomes" >
+        tools:layout="@layout/fragment_incomes">
         <action
             android:id="@+id/action_incomesFragment_to_transactionDetail"
             app:destination="@id/transactionDetail"
@@ -54,13 +54,13 @@
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.selimozturk.monexin.ui.fragments.profile.view.ProfileFragment"
+        android:name="com.selimozturk.monexin.ui.profile.view.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" />
     <fragment
         android:id="@+id/transactionFragment"
-        android:name="com.selimozturk.monexin.ui.fragments.transaction.view.TransactionFragment"
-        android:label="TransactionFragment" >
+        android:name="com.selimozturk.monexin.ui.transaction.view.TransactionFragment"
+        android:label="TransactionFragment">
         <action
             android:id="@+id/action_transactionFragment_to_homeFragment"
             app:destination="@id/homeFragment"
@@ -85,14 +85,14 @@
     </fragment>
     <dialog
         android:id="@+id/dateRangePickerFragment"
-        android:name="com.selimozturk.monexin.ui.fragments.date_picker.DatePickerFragment"
+        android:name="com.selimozturk.monexin.ui.date_picker.DatePickerFragment"
         android:label="fragment_date_range_picker"
-        tools:layout="@layout/fragment_date_range_picker" />
+        tools:layout="@layout/fragment_date_picker" />
     <fragment
         android:id="@+id/transactionDetail"
-        android:name="com.selimozturk.monexin.ui.fragments.transaction_detail.view.TransactionDetailFragment"
+        android:name="com.selimozturk.monexin.ui.transaction_detail.view.TransactionDetailFragment"
         android:label="fragment_transaction_detail"
-        tools:layout="@layout/fragment_transaction_detail" >
+        tools:layout="@layout/fragment_transaction_detail">
         <action
             android:id="@+id/action_transactionDetail_to_homeFragment"
             app:destination="@id/homeFragment"
@@ -120,14 +120,9 @@
             app:popExitAnim="@anim/to_left" />
     </fragment>
     <fragment
-        android:id="@+id/denemeFragment"
-        android:name="com.selimozturk.monexin.ui.fragments.DenemeFragment"
-        android:label="fragment_deneme"
-        tools:layout="@layout/fragment_deneme" />
-    <fragment
         android:id="@+id/cameraFragment"
-        android:name="com.selimozturk.monexin.ui.fragments.camera.CameraFragment"
-        android:label="CameraFragment" >
+        android:name="com.selimozturk.monexin.ui.camera.CameraFragment"
+        android:label="CameraFragment">
         <action
             android:id="@+id/action_cameraFragment_to_transactionFragment"
             app:destination="@id/transactionFragment" />

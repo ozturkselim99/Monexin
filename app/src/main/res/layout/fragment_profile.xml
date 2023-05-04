@@ -4,16 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="20dp"
     android:background="@color/grey_200"
-    tools:context=".ui.fragments.profile.view.ProfileFragment">
+    android:padding="20dp"
+    tools:context=".ui.profile.view.ProfileFragment">
 
     <ProgressBar
         android:id="@+id/profileProgressBar"
         style="?android:attr/progressBarStyle"
-        android:visibility="invisible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -94,10 +94,10 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/cera_pro_medium"
-                    tools:text="@string/sample_number"
                     android:textAlignment="textEnd"
                     android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    tools:text="@string/sample_number" />
             </LinearLayout>
 
             <View
@@ -126,10 +126,10 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/cera_pro_medium"
-                    tools:text="@string/sample_joined_date"
                     android:textAlignment="textEnd"
                     android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    tools:text="@string/sample_joined_date" />
             </LinearLayout>
 
             <View
@@ -158,10 +158,10 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/cera_pro_medium"
-                    tools:text="@string/ahmet_selim_ozturk"
                     android:textAlignment="textEnd"
                     android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    tools:text="@string/ahmet_selim_ozturk" />
             </LinearLayout>
 
             <View
@@ -190,10 +190,10 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/cera_pro_medium"
-                    tools:text="@string/sample_gmail_com"
                     android:textAlignment="textEnd"
                     android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    tools:text="@string/sample_gmail_com" />
             </LinearLayout>
 
             <View
@@ -236,10 +236,10 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/cera_pro_medium"
-                    tools:text="@string/sample_device"
                     android:textAlignment="textEnd"
                     android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    tools:text="@string/sample_device" />
             </LinearLayout>
 
             <View
@@ -268,10 +268,10 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/cera_pro_medium"
-                    tools:text="@string/sample_app_version"
                     android:textAlignment="textEnd"
                     android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    tools:text="@string/sample_app_version" />
             </LinearLayout>
 
             <View

@@ -1,5 +1,6 @@
 package com.selimozturk.monexin.di
 
+import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import com.google.firebase.auth.FirebaseAuth
@@ -13,31 +14,43 @@ import com.selimozturk.monexin.utils.Constants
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
 object AppModule {
 
     @Provides
-    fun provideFirebaseAuth(): FirebaseAuth = FirebaseAuth.getInstance()
+    @Singleton
+    fun provideFirebaseAuth(): FirebaseAuth {
+        return FirebaseAuth.getInstance()
+    }
 
     @Provides
-    fun provideFirebaseFirestore(): FirebaseFirestore = FirebaseFirestore.getInstance()
+    @Singleton
+    fun provideFirebaseFirestore(): FirebaseFirestore {
+        return FirebaseFirestore.getInstance()
+    }
 
     @Provides
-    fun provideFirebaseStorage(): FirebaseStorage = FirebaseStorage.getInstance()
+    @Singleton
+    fun provideFirebaseStorage(): FirebaseStorage {
+        return FirebaseStorage.getInstance()
+    }
 
     @Provides
+    @Singleton
     fun providesAuthRepository(impl: AuthRepositoryImpl): AuthRepository = impl
 
     @Provides
-    fun providesProfileRepository(impl: FirebaseRepositoryImpl): FirebaseRepository = impl
+    @Singleton
+    fun providesFirebaseRepository(impl: FirebaseRepositoryImpl): FirebaseRepository = impl
 
     @Provides
-    fun provideSharedPreference(@ApplicationContext context: Context): SharedPreferences {
-        return context.getSharedPreferences(Constants.PREFERENCES_NAME, Context.MODE_PRIVATE)
+    @Singleton
+    fun provideSharedPreference(application: Application): SharedPreferences {
+        return application.getSharedPreferences(Constants.PREFERENCES_NAME, Context.MODE_PRIVATE)
     }
 
 }

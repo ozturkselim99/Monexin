@@ -11,11 +11,11 @@ import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
-fun TextInputEditText.customIsEmpty():Boolean{
-    val textInputLayout=this.parent.parent as TextInputLayout
-    val input=this.text.toString()
-    if(input.isBlank()){
-        textInputLayout.helperText="Required field."
+fun TextInputEditText.customIsEmpty(): Boolean {
+    val textInputLayout = this.parent.parent as TextInputLayout
+    val input = this.text.toString()
+    if (input.isBlank()) {
+        textInputLayout.helperText = "Required field."
         return false
     }
     return true
@@ -33,14 +33,13 @@ fun View.setVisible(visible: Boolean) {
     }
 }
 
-fun String.convertToLongTime():String{
-        val datee=Calendar.DATE
-        val date = Date(this.toLong())
-        val format = SimpleDateFormat("dd-MM-yyyy HH:mm")
-        return format.format(date).toString()
+fun String.convertToLongTime(): String {
+    val date = Date(this.toLong())
+    val format = SimpleDateFormat("dd-MM-yyyy HH:mm")
+    return format.format(date).toString()
 }
 
-fun String.convertToTimestamp():Long{
+fun String.convertToTimestamp(): Long {
     val formatter: DateFormat = SimpleDateFormat("dd-MM-yyyy")
     val date = formatter.parse(this) as Date
     return (date.time)
